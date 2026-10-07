@@ -22,6 +22,11 @@ public class StartMenu : MonoBehaviour
         levelSelectPanel.SetActive(true);
     }
 
+    public void GoToHelpScreen()
+    {
+        SceneManager.LoadScene("Scenes/Help");
+    }
+
     public void QuitGame()
     {
         Application.Quit();

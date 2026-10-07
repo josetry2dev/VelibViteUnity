@@ -19,7 +19,7 @@ public class BikeAudio : MonoBehaviour
 
     private void Update()
     {
-        UpdateMotorSound();
+        // UpdateMotorSound();
         UpdateBrakeSound();
     }
 
