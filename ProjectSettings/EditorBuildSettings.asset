@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/1_Menu.unity
+    guid: 6e4ffba0906910b4096f499f59b3e879
+  - enabled: 1
+    path: Assets/Scenes/2_Tuto.unity
+    guid: c7807173e57ae9342ad5e7da976c1406
+  - enabled: 1
+    path: Assets/Scenes/3_CarrefourCity.unity
+    guid: 1bf2dd9246cc9aa40a1286c2b50b2811
+  - enabled: 1
+    path: Assets/Scenes/TinderGame.unity
+    guid: 9d3f0e2c8b99ad64db0e0856a57224f2
+  - enabled: 1
+    path: Assets/Scenes/4_Bouchons.unity
+    guid: 4725eba75623cea428968c5a873dc42c
+  - enabled: 1
+    path: Assets/Scenes/5_Endgame.unity
+    guid: 97f3c35c1bc43d6479c3bb6fdde3ae98
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_UseUCBPForAssetBundles: 0

@@ -1,0 +1,2 @@
+D:\Axel\Documents\LOGICIELS\Unity\premier_bazar\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\Axel\Documents\LOGICIELS\Unity\premier_bazar\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
