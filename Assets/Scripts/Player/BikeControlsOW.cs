@@ -51,7 +51,7 @@ public class BikeControlsOW : BikeControlsBase
     [SerializeField] private float instabilitySpeed = 0.5f;
 
     [Header("Drunk Settings")]
-    private float _drunkPercentage;
+    private float _drunkPercentage = 0f;
     private float _drunkTransitionSpeed;
     private float _currentInstability;
     
@@ -358,7 +358,7 @@ public class BikeControlsOW : BikeControlsBase
         turn = _steerInput * turnSpeed * Time.fixedDeltaTime;
         
         _currentInstability = Mathf.Lerp(_currentInstability, _drunkPercentage*instabilityIntensity, Time.fixedDeltaTime*_drunkTransitionSpeed);
-        if (currentSpeed > 0.5f)
+        if (currentSpeed > 0.5f && _currentInstability > 0.001f)
         {
             float noise = Mathf.PerlinNoise(Time.time * instabilitySpeed, 0f) * 2f - 1f;
             turn += noise * _currentInstability * Time.fixedDeltaTime;    

@@ -3,6 +3,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+    public Camera Camera;
 
     [SerializeField] private AudioSource sfxSource;
 
