@@ -14,7 +14,7 @@ public class LevelSelectMenu : MonoBehaviour
     void LoadLevel(int  index)
     {
         LevelInfos selectedLvl = allLevels[index];
-        bool isUnlocked = GameManager.Instance.IsLevelUnlocked(selectedLvl.levelID);
+        bool isUnlocked = PlayerPrefs.GetInt("Unlocked_" + selectedLvl.levelID, 0) == 1;
         
         if (isUnlocked)
         {

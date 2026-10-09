@@ -81,7 +81,7 @@ public class LevelCompletedMenus : MonoBehaviour
 
     public void Retry()
     {
-        GameManager.Instance.Restart();
+        LevelManager.Instance.Restart();
     }
     
     public void SetLevelCompletedPanel1()

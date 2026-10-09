@@ -43,7 +43,7 @@ public class BikeHealthSystem : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.ResetBrokenPanel();
+        LevelManager.Instance.ResetBrokenPanel();
     }
 
     public void TakeDamage()
@@ -60,23 +60,23 @@ public class BikeHealthSystem : MonoBehaviour
             if (_currentLives > 0) // Crash level 0
             {
                 StartCoroutine(RespawnSequence());
-                GameManager.Instance.OnCrash(0, respawnDelay);
+                LevelManager.Instance.OnCrash(0, respawnDelay);
             }
 
             if (_currentLives == 0) // Crash level 1 
             {
                 StartCoroutine(RespawnSequence());
-                GameManager.Instance.OnCrash(1, respawnDelay*2);
+                LevelManager.Instance.OnCrash(1, respawnDelay*2);
                 owScript.SetBrokenMode();
                 return;
             }
 
             if (_currentLives <= 0) // Crash level 2 
             {
-                GameManager.Instance.OnCrash(2, respawnDelay*2);
+                LevelManager.Instance.OnCrash(2, respawnDelay*2);
             }
         }
-        else GameManager.Instance.OnCrash(2, respawnDelay);
+        else LevelManager.Instance.OnCrash(2, respawnDelay);
 
     }
 

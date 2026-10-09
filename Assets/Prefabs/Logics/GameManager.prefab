@@ -1988,7 +1988,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3511395231334133269}
-  - component: {fileID: 1149338476854289576}
+  - component: {fileID: 2304582985092345772}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2009,13 +2009,14 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6726438583057730823}
+  - {fileID: 3641677592973772566}
   - {fileID: 5381505257092197467}
-  - {fileID: 6900279140058615191}
   - {fileID: 4506625342782072715}
+  - {fileID: 6726438583057730823}
+  - {fileID: 6900279140058615191}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1149338476854289576
+--- !u!114 &2304582985092345772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2024,20 +2025,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1952349275242863962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501aee8b00d51f141b61ded4eb889dbf, type: 3}
+  m_Script: {fileID: 11500000, guid: cbf1680bca8fe584da03fc890ad432a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  scoreManager: {fileID: 7045841875890282913}
-  levelCompletedMenus: {fileID: 4295882244859105554}
-  levelInfos: {fileID: 0}
-  elapsedTime: 0
-  timeDisplayedText: {fileID: 3166478927092694998}
-  crashPanel: {fileID: 4407779353168635049}
-  crashText: {fileID: 1480414276380411450}
-  brokenPanel: {fileID: 7632528297012368721}
-  pausePanel: {fileID: 4026961061404606479}
-  gameOverPanel: {fileID: 5420273999123868841}
-  gameOverText: {fileID: 4543110695702242930}
+  musicManagerPrefab: {fileID: 7702252230659517874, guid: 80c21b7d1fde7d746a5667afde130dcb, type: 3}
 --- !u!1 &2020952978402028785
 GameObject:
   m_ObjectHideFlags: 0
@@ -3735,6 +3726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: defa2f6c1be6ced42ad64aff41c4fbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  Camera: {fileID: 0}
   sfxSource: {fileID: 3703961641860215535}
 --- !u!1 &3752666166133215235
 GameObject:
@@ -3987,6 +3979,62 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3970986889501910735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3641677592973772566}
+  - component: {fileID: 3212884724211988923}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3641677592973772566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3970986889501910735}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3511395231334133269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3212884724211988923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3970986889501910735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 501aee8b00d51f141b61ded4eb889dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  scoreManager: {fileID: 7045841875890282913}
+  levelCompletedMenus: {fileID: 4295882244859105554}
+  levelInfos: {fileID: 0}
+  elapsedTime: 0
+  timeDisplayedText: {fileID: 8566692406695184646}
+  crashPanel: {fileID: 4407779353168635049}
+  crashText: {fileID: 1480414276380411450}
+  brokenPanel: {fileID: 7632528297012368721}
+  pausePanel: {fileID: 4026961061404606479}
+  gameOverPanel: {fileID: 5420273999123868841}
+  gameOverText: {fileID: 4543110695702242930}
+  _playerInput: {fileID: 2934202452713221086}
 --- !u!1 &3993631679835279417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4217,30 +4265,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuGeneric
   options:
-  - optionName: Quit
-    textElement: {fileID: 5373772577814559581}
-    onSelectAction:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1149338476854289576}
-          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-          m_MethodName: QuitGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - optionName: Restart
     textElement: {fileID: 3510471715347613657}
     onSelectAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1149338476854289576}
-          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        - m_Target: {fileID: 3212884724211988923}
+          m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
           m_MethodName: Restart
           m_Mode: 1
           m_Arguments:
@@ -4256,9 +4287,26 @@ MonoBehaviour:
     onSelectAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1149338476854289576}
-          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        - m_Target: {fileID: 3212884724211988923}
+          m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
           m_MethodName: ReturnToMainMenu
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - optionName: Quit
+    textElement: {fileID: 5373772577814559581}
+    onSelectAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3212884724211988923}
+          m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+          m_MethodName: QuitGame
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4276,7 +4324,7 @@ MonoBehaviour:
   pulseAmount: 0.1
   clickPunchScale: 1.5
   clickDuration: 0.1
-  playerInput: {fileID: 0}
+  playerInput: {fileID: 2934202452713221086}
   navigateSound: {fileID: 8300000, guid: 797325e3f39f49542acc9058297e62f4, type: 3}
   submitSound: {fileID: 8300000, guid: 02c9b03e698ed0943ada39c7797a6546, type: 3}
   uiVolume: 0.7
@@ -6434,7 +6482,7 @@ MonoBehaviour:
     onSelectAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1149338476854289576}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
           m_MethodName: Restart
           m_Mode: 1
@@ -6451,7 +6499,7 @@ MonoBehaviour:
     onSelectAction:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1149338476854289576}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
           m_MethodName: QuitGame
           m_Mode: 1
