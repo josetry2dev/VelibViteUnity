@@ -24,8 +24,14 @@ EditorBuildSettings:
     path: Assets/Scenes/5_Endgame.unity
     guid: 14975ac64d152e342b9f9810be5220b3
   - enabled: 1
-    path: Assets/Scenes/Help.unity
+    path: Assets/Scenes/00_Help.unity
     guid: f08faffe40133e845bbf6b5fe9664eec
+  - enabled: 1
+    path: Assets/Scenes/01_Expo.unity
+    guid: f51996dc0fae1214fafeaa7fb13334fc
+  - enabled: 1
+    path: Assets/Scenes/02_Studio.unity
+    guid: cf21e9408dae0ec48aff3262cbdea8a2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

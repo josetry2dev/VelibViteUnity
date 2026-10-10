@@ -24,9 +24,19 @@ public class StartMenu : MonoBehaviour
 
     public void GoToHelpScreen()
     {
-        SceneManager.LoadScene("Scenes/Help");
+        SceneManager.LoadScene("Scenes/00_Help");
     }
-
+    
+    public void GoToExpo()
+    {
+        SceneManager.LoadScene("Scenes/01_Expo");
+    }
+    
+    public void GoToStudio()
+    {
+        SceneManager.LoadScene("Scenes/02_Studio");
+    }
+    
     public void QuitGame()
     {
         Application.Quit();

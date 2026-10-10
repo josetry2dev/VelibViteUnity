@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 5080046463240780325}
   - component: {fileID: 115634338405904931}
   - component: {fileID: 5285486737189562931}
+  - component: {fileID: 163752324806506443}
   m_Layer: 0
   m_Name: Lampadaire
   m_TagString: Untagged
@@ -217,6 +218,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &163752324806506443
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3525274796890694669}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.1787682, y: 2.1787732, z: 22.446814}
+  m_Center: {x: 2.9708095e-22, y: -0.0000027354727, z: 11.223405}
 --- !u!1 &3826174203300402997
 GameObject:
   m_ObjectHideFlags: 0

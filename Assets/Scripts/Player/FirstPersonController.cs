@@ -49,10 +49,9 @@ public class FirstPersonController : MonoBehaviour
 
     private void Awake()
     {
+        _playerInput = FindFirstObjectByType<PlayerInput>();
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true; // Sécurité
-
-        _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
         _jumpAction = _playerInput.actions["Jump"];
