@@ -25,14 +25,10 @@ public class MusicManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // C'EST LÀ QUE TOUT SE JOUE ! On dit à Unity de ne pas détruire cet objet
-            // quand on change de scène ou qu'on recharge le niveau.
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // Si un autre MusicManager existe déjà (parce qu'on est revenu au menu principal),
-            // on détruit le nouveau pour garder l'original.
             Destroy(gameObject);
             return;
         }
@@ -59,6 +55,7 @@ public class MusicManager : MonoBehaviour
         if (clipToPlay == null)
         {
             Debug.LogWarning("Aucune musique définie pour la scène : " + sceneName);
+            audioSource.Stop();
             return;
         }
 

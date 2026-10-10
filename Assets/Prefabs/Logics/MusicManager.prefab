@@ -51,17 +51,17 @@ MonoBehaviour:
   - sceneName: 2_Tuto
     musicClip: {fileID: 8300000, guid: 4a9d2b05ba97f3c40b78600c4555766d, type: 3}
   - sceneName: 3_CarrefourCity
-    musicClip: {fileID: 8300000, guid: 7fa33d2e041156d48986f8f927fdeaef, type: 3}
+    musicClip: {fileID: 8300000, guid: d396e81a555b1e240a67f401beeb39ed, type: 3}
   - sceneName: 4_Bouchons
-    musicClip: {fileID: 8300000, guid: 693211bb66d4e9c43aafd2f70455905c, type: 3}
+    musicClip: {fileID: 8300000, guid: c697a83e316d4af438088314f06e211a, type: 3}
   - sceneName: 5_Endgame
     musicClip: {fileID: 8300000, guid: e4493357ba7227540a5100f34785b33a, type: 3}
   - sceneName: 00_Help
     musicClip: {fileID: 8300000, guid: 7d073415b6d88014c99a324f608c9135, type: 3}
   - sceneName: 01_Expo
-    musicClip: {fileID: 8300000, guid: 7d073415b6d88014c99a324f608c9135, type: 3}
+    musicClip: {fileID: 8300000, guid: 199f79458a3983a4b808fae4f4f3b78d, type: 3}
   - sceneName: 02_Studio
-    musicClip: {fileID: 8300000, guid: 7d073415b6d88014c99a324f608c9135, type: 3}
+    musicClip: {fileID: 0}
 --- !u!82 &4491626246458174051
 AudioSource:
   m_ObjectHideFlags: 0
