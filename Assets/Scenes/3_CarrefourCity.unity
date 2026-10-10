@@ -8010,6 +8010,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 3212884724211988923, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: levelInfos
+      value: 
+      objectReference: {fileID: 11400000, guid: 9391418c078a99944bc6421442b91530, type: 2}
     - target: {fileID: 3511395231334133269, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.91943

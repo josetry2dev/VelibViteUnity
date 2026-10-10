@@ -3593,6 +3593,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1932230786501116284, guid: 80c21b7d1fde7d746a5667afde130dcb, type: 3}
+      propertyPath: musicTracks.Array.data[5].musicClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e4493357ba7227540a5100f34785b33a, type: 3}
     - target: {fileID: 2401929688724950761, guid: 80c21b7d1fde7d746a5667afde130dcb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 614.4294

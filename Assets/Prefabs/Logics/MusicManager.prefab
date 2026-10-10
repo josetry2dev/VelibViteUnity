@@ -52,8 +52,14 @@ MonoBehaviour:
     musicClip: {fileID: 8300000, guid: 7d073415b6d88014c99a324f608c9135, type: 3}
   - sceneName: 2_Tuto
     musicClip: {fileID: 8300000, guid: 4a9d2b05ba97f3c40b78600c4555766d, type: 3}
-  - sceneName: 
-    musicClip: {fileID: 0}
+  - sceneName: 3_CarrefourCity
+    musicClip: {fileID: 8300000, guid: 7fa33d2e041156d48986f8f927fdeaef, type: 3}
+  - sceneName: 4_Bouchons
+    musicClip: {fileID: 8300000, guid: 693211bb66d4e9c43aafd2f70455905c, type: 3}
+  - sceneName: 5_Endgame
+    musicClip: {fileID: 8300000, guid: e4493357ba7227540a5100f34785b33a, type: 3}
+  - sceneName: Expo
+    musicClip: {fileID: 8300000, guid: 7d073415b6d88014c99a324f608c9135, type: 3}
 --- !u!82 &4491626246458174051
 AudioSource:
   m_ObjectHideFlags: 0
