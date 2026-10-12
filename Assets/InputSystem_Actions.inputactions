@@ -97,9 +97,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Boost",
+                    "name": "Carre",
                     "type": "Button",
-                    "id": "416c6227-a61d-4413-9bc1-e32ef7a0b9c6",
+                    "id": "815e78a6-bfa8-4613-b85d-4f3e8e0d8207",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -127,6 +127,15 @@
                     "name": "Sonnette",
                     "type": "Button",
                     "id": "8388d547-5128-4387-a7b8-b1dc84dc1b14",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Boost",
+                    "type": "Button",
+                    "id": "416c6227-a61d-4413-9bc1-e32ef7a0b9c6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -472,6 +481,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70f978bf-08d0-495f-a482-0b64c9877f3c",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Carre",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

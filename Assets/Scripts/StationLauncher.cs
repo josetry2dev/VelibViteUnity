@@ -7,8 +7,10 @@ using UnityEngine.SceneManagement;
 public class StationLauncher : MonoBehaviour
 {
     public GameObject enterStationPanel;
+    public GameObject fpsPlayerPrefab;
     public PlayerInput playerInput;
     private InputAction _enterAction;
+    private InputAction _dropAction;
     public StationManager stationManager;
     private GameObject _player;
     public Camera activeCamera;
@@ -24,6 +26,7 @@ public class StationLauncher : MonoBehaviour
             playerInput = FindFirstObjectByType<PlayerInput>();
         }
         _enterAction = playerInput.actions["Interact"];
+        _dropAction = playerInput.actions["Carre"];
     }
 
     public void OnTriggerEnter(Collider other)
@@ -35,6 +38,8 @@ public class StationLauncher : MonoBehaviour
             _isPlayerInZone = true;
             _enterAction.Enable();
             _enterAction.performed += OnInteractPerformed;
+            _dropAction.Enable();
+            _dropAction.performed += OnDropPerformed;
         }
     }
 
@@ -45,6 +50,7 @@ public class StationLauncher : MonoBehaviour
             enterStationPanel.SetActive(false);
             _isPlayerInZone = false;
             _enterAction.performed -= OnInteractPerformed;
+            _dropAction.performed -= OnDropPerformed;
             _hasJustSpawn = false;
         }
     }
@@ -58,7 +64,20 @@ public class StationLauncher : MonoBehaviour
             var pos = _player.GetComponentInChildren<Camera>().gameObject.transform;
             Destroy(_player);
             _enterAction.performed -= OnInteractPerformed;
+            _dropAction.performed -= OnDropPerformed;
             stationManager.StartSelection(pos);
+        }
+    }
+    
+    private void OnDropPerformed(InputAction.CallbackContext context)
+    {
+        if (_isPlayerInZone)
+        {
+            var pos = _player.GetComponentInChildren<Camera>().gameObject.transform;
+            Destroy(_player);
+            _enterAction.performed -= OnInteractPerformed;
+            _dropAction.performed -= OnDropPerformed;
+            Instantiate(fpsPlayerPrefab, pos.position, Quaternion.identity);
         }
     }
     
