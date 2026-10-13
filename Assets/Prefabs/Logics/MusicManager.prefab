@@ -62,6 +62,8 @@ MonoBehaviour:
     musicClip: {fileID: 8300000, guid: 199f79458a3983a4b808fae4f4f3b78d, type: 3}
   - sceneName: 02_Studio
     musicClip: {fileID: 0}
+  - sceneName: TinderGame
+    musicClip: {fileID: 8300000, guid: 59246fc4e0e279646a6f7c5749118332, type: 3}
 --- !u!82 &4491626246458174051
 AudioSource:
   m_ObjectHideFlags: 0

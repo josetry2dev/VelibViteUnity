@@ -18,6 +18,7 @@ public class TinderManager : MonoBehaviour
 
     [Header(" --- UI References --- ")]
     public GameObject matchImage;
+    public GameObject nextCanvas;
     public Image profileImage;
     public RectTransform cardTransform;
     public TextMeshProUGUI timerText;
@@ -181,6 +182,7 @@ public class TinderManager : MonoBehaviour
         if (_win) {
             timerText.text = "";
             matchImage.SetActive(true);
+            nextCanvas.SetActive(true);
         } else {
             timerText.text = "TROP LENT...";
         }

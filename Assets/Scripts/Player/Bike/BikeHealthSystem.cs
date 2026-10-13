@@ -43,7 +43,7 @@ public class BikeHealthSystem : MonoBehaviour
 
     private void OnDestroy()
     {
-        LevelManager.Instance.ResetBrokenPanel();
+        if (LevelManager.Instance != null) LevelManager.Instance.ResetBrokenPanel();
     }
 
     public void TakeDamage()
