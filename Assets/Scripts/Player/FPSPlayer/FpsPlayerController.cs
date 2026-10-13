@@ -78,7 +78,7 @@ public class FpsPlayerController : MonoBehaviour
         _controller = GetComponent<CharacterController>();
 
         // Find the shared PlayerInput owned by the GameManager.
-        _playerInput = FindFirstObjectByType<PlayerInput>();
+        _playerInput = FindAnyObjectByType<PlayerInput>();
 
         if (_playerInput == null)
         {

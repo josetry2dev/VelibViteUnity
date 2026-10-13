@@ -28,7 +28,7 @@ public class TutoController : MonoBehaviour
     {
         if (targetPlayerInput == null)
         {
-            targetPlayerInput = FindFirstObjectByType<PlayerInput>();
+            targetPlayerInput = FindAnyObjectByType<PlayerInput>();
         }
         _brakeAction = targetPlayerInput.actions["Brake"];
         _boostAction = targetPlayerInput.actions["Boost"];

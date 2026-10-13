@@ -40,7 +40,7 @@ public class TinderManager : MonoBehaviour
 
     void Awake()
     {
-        if (_playerInput == null) _playerInput = FindFirstObjectByType<PlayerInput>();
+        if (_playerInput == null) _playerInput = FindAnyObjectByType<PlayerInput>();
         _moveAction = _playerInput.actions["Move"];
         _submitAction = _playerInput.actions["Submit"];
         _startPos = cardTransform.anchoredPosition;

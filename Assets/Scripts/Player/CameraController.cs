@@ -43,8 +43,8 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        _playerInput = FindFirstObjectByType<PlayerInput>();
-        _cameraTransform = FindFirstObjectByType<Camera>().transform;
+        _playerInput = FindAnyObjectByType<PlayerInput>();
+        _cameraTransform = FindAnyObjectByType<Camera>().transform;
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
     }

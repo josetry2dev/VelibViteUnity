@@ -23,7 +23,7 @@ public class StationLauncher : MonoBehaviour
         stationManager.enabled = false;
         if (playerInput == null)
         {
-            playerInput = FindFirstObjectByType<PlayerInput>();
+            playerInput = FindAnyObjectByType<PlayerInput>();
         }
         _enterAction = playerInput.actions["Interact"];
         _dropAction = playerInput.actions["Carre"];

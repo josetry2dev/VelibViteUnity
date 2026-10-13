@@ -61,7 +61,7 @@ public class MenuGeneric : MonoBehaviour
         _activationCooldown = 0.2f;
         _canInput = true;
 
-        if (playerInput == null) playerInput = FindFirstObjectByType<PlayerInput>();
+        if (playerInput == null) playerInput = FindAnyObjectByType<PlayerInput>();
         
         _navigateAction = playerInput.actions["Navigate"];
         _submitAction = playerInput.actions["Submit"];

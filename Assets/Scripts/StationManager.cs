@@ -73,7 +73,7 @@ public class StationManager : MonoBehaviour
     #region Init & Input
     void Awake()
     {
-        if (playerInput == null) playerInput = FindFirstObjectByType<PlayerInput>();
+        if (playerInput == null) playerInput = FindAnyObjectByType<PlayerInput>();
         _navigateAction = playerInput.actions["Navigate"];
         _submitAction = playerInput.actions["Submit"];
     }

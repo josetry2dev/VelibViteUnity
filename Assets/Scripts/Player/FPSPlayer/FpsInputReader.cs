@@ -35,7 +35,7 @@ public class FpsInputReader : MonoBehaviour
 
     private void Awake()
     {
-        _playerInput = FindFirstObjectByType<PlayerInput>();
+        _playerInput = FindAnyObjectByType<PlayerInput>();
 
         if (_playerInput == null)
         {

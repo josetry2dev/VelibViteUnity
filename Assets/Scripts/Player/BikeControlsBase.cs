@@ -18,7 +18,7 @@ public abstract class BikeControlsBase : MonoBehaviour
         _rb.interpolation = RigidbodyInterpolation.Interpolate;
         _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         
-        _playerInput = FindFirstObjectByType<PlayerInput>();
+        _playerInput = FindAnyObjectByType<PlayerInput>();
         _moveAction = _playerInput.actions["Move"]; 
     }
     

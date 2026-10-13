@@ -49,7 +49,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Awake()
     {
-        _playerInput = FindFirstObjectByType<PlayerInput>();
+        _playerInput = FindAnyObjectByType<PlayerInput>();
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true; // Sécurité
         _moveAction = _playerInput.actions["Move"];

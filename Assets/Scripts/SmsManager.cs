@@ -46,7 +46,7 @@ public class SmsManager : MonoBehaviour
     
     void Awake()
     {
-        if (_playerInput == null) _playerInput = FindFirstObjectByType<PlayerInput>();
+        if (_playerInput == null) _playerInput = FindAnyObjectByType<PlayerInput>();
         _navigateAction = _playerInput.actions["Navigate"];
     }
 

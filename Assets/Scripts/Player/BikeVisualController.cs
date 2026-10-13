@@ -18,7 +18,7 @@ public class BikeVisualController : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = FindFirstObjectByType<PlayerInput>();
+        playerInput = FindAnyObjectByType<PlayerInput>();
         _moveAction = playerInput.actions["Move"];
     }
 
