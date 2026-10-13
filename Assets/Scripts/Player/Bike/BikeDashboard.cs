@@ -4,15 +4,18 @@ using TMPro;
 
 public class BikeDashboard : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     public BikeControlsBase bikeControls;
     public BikeHealthSystem bikeHealthSystem;
 
-    [Header("UI Elements")]
+    [Header(" --- Speed UI --- ")]
     public TextMeshProUGUI speedText;
-    public Image boostBarImage;
-    
     public Image[] speedTierBars;
+
+    [Header(" --- Boost UI --- ")]
+    public Image boostBarImage;
+
+    [Header(" --- Battery UI --- ")]
     public Image[] batteryBars;
 
     void Update()
@@ -30,21 +33,17 @@ public class BikeDashboard : MonoBehaviour
 
             for (int i = 0; i < speedTierBars.Length; i++)
             {
-                if (i < currentTier) speedTierBars[i].enabled = true;
-                else speedTierBars[i].enabled = false;
+                speedTierBars[i].enabled = i < currentTier;
             }
-            
-            // Lives 
+
+            // Lives
             int lives = bikeHealthSystem.GetCurrentLives();
-            
+
             for (int i = 0; i < batteryBars.Length; i++)
             {
-                if (i < lives) batteryBars[i].enabled = true;
-                else batteryBars[i].enabled = false;
-                
-                if (lives == 1) batteryBars[0].color = Color.red;
-                else batteryBars[0].color = Color.black;
+                batteryBars[i].enabled = i < lives;
             }
+            if (batteryBars.Length > 0) batteryBars[0].color = lives == 1 ? Color.red : Color.black;
         }
     }
 }

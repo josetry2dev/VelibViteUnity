@@ -1,20 +1,23 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class StationLauncher : MonoBehaviour
 {
-    public GameObject enterStationPanel;
-    public GameObject fpsPlayerPrefab;
+    [Header(" --- References --- ")]
+    public StationManager stationManager;
     public PlayerInput playerInput;
+    public Camera activeCamera;
+
+    [Header(" --- UI --- ")]
+    public GameObject enterStationPanel;
+
+    [Header(" --- Prefabs --- ")]
+    public GameObject fpsPlayerPrefab;
+
     private InputAction _enterAction;
     private InputAction _dropAction;
-    public StationManager stationManager;
     private GameObject _player;
-    public Camera activeCamera;
-    
     private bool _isPlayerInZone;
     private bool _hasJustSpawn;
 
@@ -31,7 +34,7 @@ public class StationLauncher : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && _hasJustSpawn == false)
+        if (other.CompareTag("Player") && !_hasJustSpawn)
         {
             _player = other.gameObject;
             enterStationPanel.SetActive(true);
@@ -85,17 +88,17 @@ public class StationLauncher : MonoBehaviour
     {
         stationManager.enabled = true;
         enterStationPanel.SetActive(false);
-        activeCamera =  Camera.main;
+        activeCamera = Camera.main;
         var pos = activeCamera.transform;
         Destroy(activeCamera.gameObject);
         _enterAction.performed -= OnInteractPerformed;
         stationManager.StartSelection(pos, StartTutorial);
-        _hasJustSpawn =  true;
+        _hasJustSpawn = true;
     }
 
     public void StartTutorial()
     {
         // ScoreManager.Instance.StartRun();
-        SceneManager.LoadScene(1);    
+        SceneManager.LoadScene(1);
     }
 }

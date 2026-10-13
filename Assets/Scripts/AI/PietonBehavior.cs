@@ -5,25 +5,25 @@ using System.Collections; // Obligatoire pour les Coroutines
 [RequireComponent(typeof(Rigidbody))]
 public class PietonBehavior : MonoBehaviour
 {
-    [Header("Physique")]
+    [Header(" --- Speed Settings --- ")]
     public float maxSpeed = 2f;
     public float acceleration = 5f;
     public float deceleration = 10f;
     public float turnSpeed = 300f; // Vitesse de rotation du demi-tour
 
-    [Header("Détection")]
+    [Header(" --- Detection --- ")]
     public float detectionDistance = 2f;
     public LayerMask obstacleLayer; // Ex: TrafficLogic, Car
 
-    [Header("Animation")]
+    [Header(" --- References --- ")]
     public Animator anim;
 
-    private float currentSpeed = 0f;
+    private float currentSpeed;
     private CapsuleCollider _capsuleCol;
     private Rigidbody _rb;
     
-    private bool obstacleDetected = false;
-    private bool isTurningAround = false; // Pour savoir si on est en train de pivoter
+    private bool obstacleDetected;
+    private bool isTurningAround; // Pour savoir si on est en train de pivoter
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class PietonBehavior : MonoBehaviour
 
             if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
             {
-                if (pushDir.y == 1f)
+                if (Mathf.Approximately(pushDir.y, 1f))
                 {
                     return;
                 }
@@ -66,21 +66,21 @@ public class PietonBehavior : MonoBehaviour
     void CheckForObstacles()
     {
         Vector3 frontPos = transform.TransformPoint(_capsuleCol.center + new Vector3(0, 0, _capsuleCol.radius));
-        RaycastHit hit;
+        
         obstacleDetected = false;
 
         // On lance un Raycast qui touche TOUT (LayerMask ~0)
-        if (Physics.Raycast(frontPos, transform.forward, out hit, detectionDistance))
+        if (Physics.Raycast(frontPos, transform.forward, out RaycastHit hit, detectionDistance))
         {
             // 1. On vérifie si l'objet touché appartient au obstacleLayer
             // (La syntaxe (1 << layer) & mask est la façon pro de vérifier un layer)
             if (((1 << hit.collider.gameObject.layer) & obstacleLayer) != 0)
             {
                 // C'est un obstacle normal (Feu rouge, etc.) -> On s'arrête
-                TrafficLightController light = hit.collider.GetComponentInParent<TrafficLightController>();
-                if (light != null)
+                TrafficLightController trafficLight = hit.collider.GetComponentInParent<TrafficLightController>();
+                if (trafficLight != null)
                 {
-                    if (light.currentState == TrafficLightController.LightState.Green)
+                    if (trafficLight.currentState == TrafficLightController.LightState.Green)
                         obstacleDetected = true;
                 }
                 else
@@ -128,7 +128,7 @@ public class PietonBehavior : MonoBehaviour
         else
             currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
 
-        _rb.MovePosition(_rb.position + transform.forward * currentSpeed * Time.deltaTime);
+        _rb.MovePosition(_rb.position + transform.forward * (currentSpeed * Time.deltaTime));
     }
 
     void UpdateAnimation()

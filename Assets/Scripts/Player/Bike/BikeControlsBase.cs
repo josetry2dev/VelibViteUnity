@@ -34,7 +34,8 @@ public abstract class BikeControlsBase : MonoBehaviour
 
     protected void ApplyGravityMultiplier()
     {
-        if(_rb.useGravity) {
+        if (_rb.useGravity)
+        {
             _rb.AddForce(Physics.gravity * gravityMultiplier, ForceMode.Acceleration);
         }
     }
@@ -44,7 +45,6 @@ public abstract class BikeControlsBase : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         transform.position = respawnPos;
-        // Vector3 safeRot = respawnRot.eulerAngles;
         transform.rotation = respawnRot;
     }
     

@@ -2,26 +2,25 @@ using UnityEngine;
 
 public class BikeCameraEffect : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     public BikeControlsBase bikeControls;
     public Camera targetCamera;
 
-    [Header("FOV Settings")]
+    [Header(" --- FOV Settings --- ")]
     public float normalFOV = 65f;
     public float boostFOV = 85f;
     public float transitionSpeed = 5f;
     public float returnSpeed = 1.5f;
 
-    [Header("Crash Settings")]
+    [Header(" --- Crash Settings --- ")]
     public float crashTiltAngle = 80f;
     public float crashDropAmount = 1.0f;
     public float crashSideOffset = 1.5f;
     public float crashSpeed = 10f;
     
-    private bool _isCrashed = false;
+    private bool _isCrashed;
     private Vector3 _initialLocalPos;
     private Quaternion _initialLocalRotation;
-    private Vector3 _targetLocalPos;
 
     void Start()
     {
@@ -40,7 +39,7 @@ public class BikeCameraEffect : MonoBehaviour
     void Update()
     {
         if (bikeControls == null || targetCamera == null) return;
-        if (_isCrashed)HandleCrashAnimation();
+        if (_isCrashed) HandleCrashAnimation();
         else HandleFOVLogic();
     }
     void HandleFOVLogic()

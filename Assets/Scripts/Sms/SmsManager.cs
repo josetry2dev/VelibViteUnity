@@ -2,48 +2,45 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
 
 public class SmsManager : MonoBehaviour
 {
-    [Header("Input Settings")]
-    private PlayerInput _playerInput;
-    private InputAction _navigateAction;
-    private bool _canProcessInput = true;
-
-    [Header("UI Elements")]
+    [Header(" --- UI Elements --- ")]
     public GameObject smsPanel;
     public TMP_Text historyText;
     public TMP_Text currentInputText;
     public Transform keySequenceContainer;
     public TMP_Text timeOutTxt;
-    
+
+    [Header(" --- Pulse Effect --- ")]
     public float pulseSpeed = 3f;
     public float pulseAmount = 0.1f;
     public float selectedScale = 1f;
 
-    [Header("Prefabs")]
+    [Header(" --- Prefabs --- ")]
     public GameObject keyIconPrefab;
-    
-    [Header("Audio Settings")]
+
+    [Header(" --- Audio Settings --- ")]
     public AudioClip receptionSound;
     public AudioClip sendingSound;
     public AudioClip typingSound;
     [Range(0, 1)] public float smsVolume = 0.7f;
 
+    // Input
+    private PlayerInput _playerInput;
+    private InputAction _navigateAction;
+
+    // Dialogue state
     private SmsDialogue _currentDialogue;
-    private int _currentMsgIndex = 0;
-    private List<Vector2> _requiredSequence = new List<Vector2>();
-    private int _sequenceIndex = 0;
-    private bool _isWaitingForInput = false;
-    private float _timer = 0f;
-    private float _maxTimer = 0f;
-    
-    private Action _onDialogueEndCallback; 
-    
-    
+    private int _currentMsgIndex;
+    private readonly List<Vector2> _requiredSequence = new List<Vector2>();
+    private int _sequenceIndex;
+    private bool _isWaitingForInput;
+    private float _timer;
+    private Action _onDialogueEndCallback;
+
     void Awake()
     {
         if (_playerInput == null) _playerInput = FindAnyObjectByType<PlayerInput>();
@@ -91,7 +88,7 @@ public class SmsManager : MonoBehaviour
             AudioManager.Instance.PlaySFX(receptionSound);
             historyText.text += $"\n<color=#00CCFF><b>{msg.senderName}:</b></color> {msg.content}";
             _currentMsgIndex++;
-            Invoke("NextMessage", msg.tempo);
+            Invoke(nameof(NextMessage), msg.tempo);
         }
     }
 
@@ -101,10 +98,9 @@ public class SmsManager : MonoBehaviour
         currentInputText.text = "";
         _sequenceIndex = 0;
         
-        if(msg.timeOut > 0) 
+        if (msg.timeOut > 0) 
         {
             _timer = msg.timeOut;
-            _maxTimer = msg.timeOut;
             timeOutTxt.text = _timer.ToString("0.00");
         } else
         {
@@ -134,7 +130,7 @@ public class SmsManager : MonoBehaviour
     // C'est ici que le New Input System nous envoie la direction
     private void OnNavigatePerformed(InputAction.CallbackContext context)
     {
-        if (!_isWaitingForInput || !_canProcessInput) return;
+        if (!_isWaitingForInput) return;
 
         Vector2 inputDir = context.ReadValue<Vector2>();
 
@@ -174,7 +170,7 @@ public class SmsManager : MonoBehaviour
         historyText.text += $"\n<color=#00FF44><b>Moi:</b></color> {msg.content}";
         currentInputText.text = "";
         _currentMsgIndex++;
-        Invoke("NextMessage", msg.tempo);
+        Invoke(nameof(NextMessage), msg.tempo);
     }
 
     void Update()

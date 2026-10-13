@@ -1,13 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Important pour savoir quelle scène est chargée
 
 public class MusicManager : MonoBehaviour
 {
     // Créons un singleton pour pouvoir appeler ce manager depuis n'importe où
     public static MusicManager instance;
 
-    private AudioSource audioSource;
-    // Un dictionnaire ou une liste pour associer des noms de scènes à tes musiques
+    // Une liste pour associer des noms de scènes à tes musiques
     [System.Serializable]
     public struct MusicTrack
     {
@@ -15,8 +13,10 @@ public class MusicManager : MonoBehaviour
         public AudioClip musicClip;
     }
 
+    [Header(" --- Music Tracks --- ")]
     public MusicTrack[] musicTracks;
 
+    private AudioSource audioSource;
     private string currentScenePlaying = ""; // Pour savoir quelle musique est actuellement en cours
 
     private void Awake()
@@ -63,7 +63,7 @@ public class MusicManager : MonoBehaviour
         // Si oui, on ne fait rien pour ne pas la redémarrer.
         if (currentScenePlaying == sceneName && audioSource.isPlaying)
         {
-            return; 
+            return;
         }
 
         // Sinon, on change la musique et on la lance
@@ -72,7 +72,7 @@ public class MusicManager : MonoBehaviour
         audioSource.loop = true; // Assure-toi que la musique tourne en boucle
         audioSource.Play();
     }
-    
+
     // Petite fonction pratique pour arrêter la musique si nécessaire (par exemple, dans un menu principal silencieux)
     public void StopMusic()
     {

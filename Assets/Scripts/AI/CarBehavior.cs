@@ -3,45 +3,45 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class CarBehavior : MonoBehaviour
 {
-    [Header("Physique")]
+    [Header(" --- Speed Settings --- ")]
     public float maxSpeed = 15f;
     public float accelerationMin = 3f;
     public float accelerationMax = 6f;
-    private float _acceleration = 5f;
     public float deceleration = 10f;
-    
-    [Header("Détection")]
+
+    [Header(" --- Detection --- ")]
     public float detectionDistance = 5f;
     public LayerMask trafficLogicLayer;
-    
-    public GameObject[] visuals;
-    private CarVisualRefs _visualsRefs;
-    
-    private float _currentSpeed = 0f;
-    private BoxCollider _boxCol;
-    private bool _obstacleDetected = false;
 
+    [Header(" --- Visuals --- ")]
+    public GameObject[] visuals;
+
+    private float _acceleration = 5f;
+    private float _currentSpeed;
+    private bool _obstacleDetected;
+    private BoxCollider _boxCol;
     private Rigidbody _rb;
+    private CarVisualRefs _visualsRefs;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        
+
         // Random Visual
         var randomNumber = Random.Range(0, visuals.Length);
         visuals[0].SetActive(false); // Default visual
         visuals[randomNumber].SetActive(true);
         _visualsRefs = visuals[randomNumber].GetComponent<CarVisualRefs>();
-        
+
         // Random Acceleration
         _acceleration = Random.Range(accelerationMin, accelerationMax);
     }
-    
+
     void Start()
     {
         _boxCol = GetComponent<BoxCollider>();
         // On démarre à fond ou à 0 selon ton choix, ici on dit qu'elle arrive lancée
-        _currentSpeed = 0; 
+        _currentSpeed = 0;
     }
 
     void Update()
@@ -58,20 +58,19 @@ public class CarBehavior : MonoBehaviour
         Vector3 frontPos = transform.TransformPoint(_boxCol.center + new Vector3(0, 0, _boxCol.size.z / 2));
 
         // 2. Lancer le rayon depuis ce point
-        RaycastHit hit;
         _obstacleDetected = false;
 
         // Note: On utilise QueryTriggerInteraction.Collide pour détecter les Triggers (Zone d'arrêt)
-        if (Physics.Raycast(frontPos, transform.forward, out hit, detectionDistance, trafficLogicLayer, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(frontPos, transform.forward, out RaycastHit hit, detectionDistance, trafficLogicLayer, QueryTriggerInteraction.Collide))
         {
             // Vérifions ce qu'on a touché
-            TrafficLightController light = hit.collider.GetComponentInParent<TrafficLightController>();
+            TrafficLightController trafficLight = hit.collider.GetComponentInParent<TrafficLightController>();
 
-            if (light != null)
+            if (trafficLight != null)
             {
                 // Si c'est un feu : on s'arrête si c'est ROUGE ou ORANGE
-                if (light.currentState == TrafficLightController.LightState.Red || 
-                    light.currentState == TrafficLightController.LightState.Yellow)
+                if (trafficLight.currentState == TrafficLightController.LightState.Red ||
+                    trafficLight.currentState == TrafficLightController.LightState.Yellow)
                 {
                     _obstacleDetected = true;
                 }
@@ -98,32 +97,32 @@ public class CarBehavior : MonoBehaviour
         {
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, maxSpeed, _acceleration * dt);
         }
-        
-        Vector3 nextPosition = _rb.position + transform.forward * _currentSpeed * dt;
+
+        Vector3 nextPosition = _rb.position + transform.forward * (_currentSpeed * dt);
 
         _rb.MovePosition(nextPosition);
-        
 
-        _visualsRefs.wheelArD.Rotate(Vector3.forward * 10*_currentSpeed * Time.deltaTime);
-        _visualsRefs.wheelAvD.Rotate(Vector3.forward * 10*_currentSpeed * Time.deltaTime);
-        _visualsRefs.wheelArG.Rotate(Vector3.forward * 10*_currentSpeed * Time.deltaTime);
-        _visualsRefs.wheelAvG.Rotate(Vector3.forward * 10*_currentSpeed * Time.deltaTime);
+        Vector3 wheelRotation = Vector3.forward * (10 * _currentSpeed * Time.deltaTime);
+        _visualsRefs.wheelArD.Rotate(wheelRotation);
+        _visualsRefs.wheelAvD.Rotate(wheelRotation);
+        _visualsRefs.wheelArG.Rotate(wheelRotation);
+        _visualsRefs.wheelAvG.Rotate(wheelRotation);
     }
 
     void OnDrawGizmos()
     {
         if (_boxCol == null) _boxCol = GetComponent<BoxCollider>();
-        
+
         Gizmos.color = _obstacleDetected ? Color.red : Color.green;
         Vector3 frontPos = transform.TransformPoint(_boxCol.center + new Vector3(0, 0, _boxCol.size.z / 2));
         Gizmos.DrawLine(frontPos, frontPos + transform.forward * detectionDistance);
     }
-    
+
     public float GetSpeed()
     {
         if (_currentSpeed > 0.1f)
         {
-            return (_currentSpeed);
+            return _currentSpeed;
         }
         return 0;
     }

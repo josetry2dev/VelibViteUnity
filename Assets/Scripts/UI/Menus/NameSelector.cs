@@ -5,28 +5,28 @@ using UnityEngine.InputSystem;
 
 public class NameSelector : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public LevelCompletedMenus levelCompletedMenus;
-    
-    [Header("UI Elements")]
+
+    [Header(" --- UI Elements --- ")]
     public TextMeshProUGUI[] letterTexts;
     public Color activeColor = Color.yellow;
     public Color inactiveColor = Color.white;
 
-    [Header("Settings")]
-    private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !";
-    private readonly int[] _charIndices = new int[5];
-    private int _currentSlot = 0;
-
-    [Header("Input")]
+    [Header(" --- Input --- ")]
     public PlayerInput playerInput;
-    private InputAction _navigateAction;
-    private InputAction _submitAction;
-    
-    [Header("Audio Settings")]
+
+    [Header(" --- Audio Settings --- ")]
     public AudioClip navigateSound;
     public AudioClip submitSound;
     [Range(0, 1)] public float uiVolume = 0.7f;
-    
+
+    private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !";
+    private readonly int[] _charIndices = new int[5];
+    private int _currentSlot;
+
+    private InputAction _navigateAction;
+    private InputAction _submitAction;
     private bool _canInput = true;
     private const float InputCooldown = 0.15f;
     private float _submitDelay = 0.3f;
@@ -95,7 +95,7 @@ public class NameSelector : MonoBehaviour
     }
     public void OnSubmitPerformed(InputAction.CallbackContext context)
     {
-        if (_submitDelay >  0.001f) return;
+        if (_submitDelay > 0.001f) return;
         if (!_canInput) return;
         SubmitName();
     }

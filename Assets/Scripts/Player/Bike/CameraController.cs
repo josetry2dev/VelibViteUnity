@@ -3,43 +3,42 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Références")]
-    private Transform _cameraTransform;
-    private PlayerInput _playerInput;
-    
-    [Header("Gamepad")]
-    public float gamepadResponsiveness = 10f; 
+    [Header(" --- Gamepad Settings --- ")]
+    public float gamepadResponsiveness = 10f;
 
-    [Header("Limites & Angles Max")]
+    [Header(" --- Look Clamps --- ")]
     public float topClamp = -60f;
     public float bottomClamp = 60f;
     public float leftClamp = -90f;
     public float rightClamp = 90f;
 
-    [Header("Effet Tilt (Inclinaison au mouvement)")]
+    [Header(" --- Tilt Settings --- ")]
     public float maxTiltAngle = 5f;
     public float tiltSpeed = 5f;
     public float returnSpeed = 8f;
-    
-    [Header("Drunk settings")]
-    private float _drunkPercentage;
-    private float _drunkTransitionSpeed;
-    private float _maxDrunkXOffset = 0.03f;
-    private float _maxDrunkYOffset = 0.02f;
-    private float _currentDrunkXOffset;
-    private float _currentDrunkYOffset;
-    
-    private Vector2 _lookInput;
-    private Vector2 _moveInput;
+
+    // References
+    private Transform _cameraTransform;
+    private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _lookAction;
-    
-    private float _xRotation = 0f;
-    private float _yRotation = 0f;
-    private float _currentTiltZ = 0f;
-    private bool _isGamepad = true;
-    private float _defaultXOffset = 0f;
-    private float _defaultYOffset = 0f;
+    private Vector2 _lookInput;
+    private Vector2 _moveInput;
+
+    // Drunk
+    private const float MaxDrunkXOffset = 0.03f;
+    private const float MaxDrunkYOffset = 0.02f;
+    private float _drunkPercentage;
+    private float _drunkTransitionSpeed;
+    private float _currentDrunkXOffset;
+    private float _currentDrunkYOffset;
+
+    // Rotation
+    private float _xRotation;
+    private float _yRotation;
+    private float _currentTiltZ;
+    private float _defaultXOffset;
+    private float _defaultYOffset;
 
     private void Awake()
     {
@@ -63,10 +62,10 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        _currentDrunkXOffset = Mathf.Lerp(_currentDrunkXOffset, _drunkPercentage * _maxDrunkXOffset, Time.deltaTime * _drunkTransitionSpeed);
-        _currentDrunkYOffset = Mathf.Lerp(_currentDrunkYOffset, _drunkPercentage * _maxDrunkYOffset, Time.deltaTime * _drunkTransitionSpeed);
-        _defaultXOffset += (Mathf.Sin(Time.time*0.7f) * _currentDrunkYOffset);
-        _defaultYOffset += (Mathf.Sin(Time.time) * _currentDrunkXOffset);
+        _currentDrunkXOffset = Mathf.Lerp(_currentDrunkXOffset, _drunkPercentage * MaxDrunkXOffset, Time.deltaTime * _drunkTransitionSpeed);
+        _currentDrunkYOffset = Mathf.Lerp(_currentDrunkYOffset, _drunkPercentage * MaxDrunkYOffset, Time.deltaTime * _drunkTransitionSpeed);
+        _defaultXOffset += Mathf.Sin(Time.time * 0.7f) * _currentDrunkYOffset;
+        _defaultYOffset += Mathf.Sin(Time.time) * _currentDrunkXOffset;
         
         _lookInput = _lookAction.ReadValue<Vector2>();
         _moveInput = _moveAction.ReadValue<Vector2>();
@@ -83,22 +82,19 @@ public class CameraController : MonoBehaviour
 
     private void HandleLookRotation()
     {
-        if (_isGamepad)
-        {
-            float targetY = Mathf.Lerp(leftClamp, rightClamp, (_lookInput.x + 1f) / 2f);
-            float tValueVertical = (_lookInput.y + 1f) / 2f; // Transforme -1..1 en 0..1
-            float targetX = Mathf.Lerp(bottomClamp, topClamp, tValueVertical);
-            targetY += _defaultYOffset;
-            targetX += _defaultXOffset;
-            _xRotation = Mathf.Lerp(_xRotation, targetX, gamepadResponsiveness * Time.deltaTime);
-            _yRotation = Mathf.Lerp(_yRotation, targetY, gamepadResponsiveness * Time.deltaTime);
-        }
+        float targetY = Mathf.Lerp(leftClamp, rightClamp, (_lookInput.x + 1f) / 2f);
+        float tValueVertical = (_lookInput.y + 1f) / 2f; // Transforme -1..1 en 0..1
+        float targetX = Mathf.Lerp(bottomClamp, topClamp, tValueVertical);
+        targetY += _defaultYOffset;
+        targetX += _defaultXOffset;
+        _xRotation = Mathf.Lerp(_xRotation, targetX, gamepadResponsiveness * Time.deltaTime);
+        _yRotation = Mathf.Lerp(_yRotation, targetY, gamepadResponsiveness * Time.deltaTime);
     }
 
     private void HandleTilt()
     {
         float targetTiltZ = _moveInput.x * maxTiltAngle;
-        float speed = (_moveInput.x != 0) ? tiltSpeed : returnSpeed;
+        float speed = Mathf.Approximately(_moveInput.x, 0f) ? returnSpeed : tiltSpeed;
         _currentTiltZ = Mathf.Lerp(_currentTiltZ, targetTiltZ, speed * Time.deltaTime);
     }
 

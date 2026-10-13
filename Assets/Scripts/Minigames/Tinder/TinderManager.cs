@@ -3,19 +3,20 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class TinderManager : MonoBehaviour
 {
-    [Header("Config Score & Temps")]
+    [Header(" --- Score Settings --- ")]
     public int goalScore = 300;
     public int pointsPerMatch = 10;
     public int pointsPenalty = 20;
+
+    [Header(" --- Time Settings --- ")]
     public float timeLimit = 60f;
 
-    [Header("UI References")]
+    [Header(" --- UI References --- ")]
     public GameObject matchImage;
     public Image profileImage;
     public RectTransform cardTransform;
@@ -23,19 +24,19 @@ public class TinderManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI nameText;
 
-    [Header("Data")]
+    [Header(" --- Profiles Data --- ")]
     public List<TinderProfile> allProfiles;
 
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _submitAction;
-    
-    private int _currentIndex = 0;
-    private int _currentScore = 0;
+
+    private int _currentIndex;
+    private int _currentScore;
     private float _currentTime;
     private bool _gameActive = true;
     private bool _canSwipe = true;
-    private bool _win = false;
+    private bool _win;
     private Vector2 _startPos;
 
     void Awake()
@@ -170,7 +171,7 @@ public class TinderManager : MonoBehaviour
     void UpdateUI()
     {
         profileImage.sprite = allProfiles[_currentIndex].photo;
-        nameText.text = allProfiles[_currentIndex].name;
+        nameText.text = allProfiles[_currentIndex].profileName;
         scoreText.text = $"{_currentScore} sur {goalScore}";
     }
 

@@ -4,11 +4,11 @@ using System.Collections;
 
 public class PlayerCollision : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     public BikeControlsBase bikeControls; 
     public BikeHealthSystem bikeHealthSystem;
 
-    [Header("Settings")]
+    [Header(" --- Bonk Settings --- ")]
     public float recoilForce = 20f; // bonk force
 
     private bool _hasFinished;
@@ -34,7 +34,7 @@ public class PlayerCollision : MonoBehaviour
                 {
                     Vector3 pushDir = collision.GetContact(0).normal;
                     pushDir = pushDir.normalized;
-                    if (pushDir.y >0.95f) // Si on atterit sur le sol apres un saut
+                    if (pushDir.y > 0.95f) // Si on atterit sur le sol apres un saut
                     {
                         return;
                     }
@@ -69,11 +69,11 @@ public class PlayerCollision : MonoBehaviour
             pushDir2.y = Mathf.Max(pushDir2.y, 0.5f);
             pushDir2 = pushDir2.normalized;
 
-            if ((bikeControls is BikeControlsOW owScript))
+            if (bikeControls is BikeControlsOW owScript)
             {
                 if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
                 {
-                    if (pushDir2.y >0.95f)
+                    if (pushDir2.y > 0.95f)
                     {
                         return;
                     }

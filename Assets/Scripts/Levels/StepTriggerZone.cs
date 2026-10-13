@@ -2,17 +2,20 @@ using UnityEngine;
 
 public class StepTriggerZone : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public TutoController tutoController;
-    public int step
-        ;
+
+    [Header(" --- Step Settings --- ")]
+    public int step;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if(tutoController != null) 
+            if (tutoController != null)
             {
                 tutoController.OnPlayerEnteredTrigger(step);
-                Destroy(gameObject); 
+                Destroy(gameObject);
             }
         }
     }

@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Level1Controller : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     public SmsManager smsManager;
-    
-    [Header("Dialogues du Niveau")]
+
+    [Header(" --- Level Dialogues --- ")]
     public SmsDialogue tutoAccelerer;
 
     void Start()
     {
-        Invoke("PlayIntro", 3.0f);
+        Invoke(nameof(PlayIntro), 3.0f);
     }
 
     void PlayIntro()

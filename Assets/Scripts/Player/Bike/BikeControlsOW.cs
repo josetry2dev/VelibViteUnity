@@ -1,5 +1,3 @@
-using System;
-// using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,13 +12,13 @@ public class BikeControlsOW : BikeControlsBase
     [Tooltip("Vitesse Max en marche arrière")]
     public float reverseMaxSpeed = 5f;
 
-    [Tooltip("Vitesse de virage")] 
-    private float turn;
+    [Header(" --- Turn Settings --- ")]
+    [Tooltip("Vitesse de virage")]
     public float turnSpeed = 50f;
     public float stopTurnFactor = 3f;
     public float wobbleAmplitude = 0.5f;
     public float wobbleFrequency = 6f;
-    
+
     [Header(" --- Friction & Braking --- ")]
     [Tooltip("Décélération naturelle (roue libre)")]
     public float coastingDrag = 2f;
@@ -29,7 +27,7 @@ public class BikeControlsOW : BikeControlsBase
     [Tooltip("Force du freinage MAX (quand on est à fond de boost)")]
     public float boostBrakingPower = 50f;
 
-    [Header(" --- Drift Settings (New) --- ")]
+    [Header(" --- Drift Settings --- ")]
     [Tooltip("Freinage appliqué pendant le drift")]
     public float driftDeceleration = 10f; 
     [Tooltip("Multiplicateur de rotation pendant le drift (pour faire des têtes à queue)")]
@@ -41,42 +39,32 @@ public class BikeControlsOW : BikeControlsBase
     public float boostMaxSpeed = 50f;
     public float boostAcceleration = 30f;
     public float boostDeceleration = 20f;
-    private float _boostConsumed;
     [Tooltip("Durée totale du boost en secondes")]
     public float maxBoostDuration = 3f;
-    
-    [Header("Hands Free Settings")]
-    public bool handsFree = false;
-    [SerializeField] private float instabilityIntensity = 40f;
-    [SerializeField] private float instabilitySpeed = 0.5f;
 
-    [Header("Drunk Settings")]
-    private float _drunkPercentage = 0f;
-    private float _drunkTransitionSpeed;
-    private float _currentInstability;
-    
-    [Header(" --- Sounds --- ")] 
-    public AudioSource sonnetteAudio;
-    public AudioSource roueLibreAudio;
-    
     [Header(" --- Jump Settings --- ")]
     public float jumpForce = 500f;
     public float groundCheckDistance = 1.2f;
     public LayerMask groundLayer;
-    
-    [Header(" --- Bonk Settings --- ")]
-    private float _impactTimer = 0f;
-    private float _bonkCooldown;
-    
+
+    [Header(" --- Hands Free & Drunk Settings --- ")]
+    public bool handsFree;
+    [SerializeField] private float instabilityIntensity = 40f;
+    [SerializeField] private float instabilitySpeed = 0.5f;
+
+    [Header(" --- Sounds --- ")]
+    public AudioSource sonnetteAudio;
+    public AudioSource roueLibreAudio;
+
     [Header(" --- Debug Info (Read Only) --- ")]
-    [SerializeField] private float currentSpeed = 0f;
-    [SerializeField] private int currentTierIndex = 0; 
-    [SerializeField] private float boostFuel = 0f;
-    [SerializeField] private bool isBoosting = false;
-    [SerializeField] private bool isBraking = false;
-    [SerializeField] private bool isDrifting = false;
-    [SerializeField] private bool isReversing = false;
-    [SerializeField] private bool isBroken = false;
+    [SerializeField] private float currentSpeed;
+    [SerializeField] private int currentTierIndex;
+    [SerializeField] private float boostFuel;
+    [SerializeField] private bool isBoosting;
+    [SerializeField] private bool isBraking;
+    [SerializeField] private bool isDrifting;
+    [SerializeField] private bool isReversing;
+    [SerializeField] private bool isBroken;
     [SerializeField] private bool isGrounded = true;
     [SerializeField] private float targetSpeed;
 
@@ -90,6 +78,17 @@ public class BikeControlsOW : BikeControlsBase
 
     // Internal State
     private const int MaxTiers = 5;
+    private float turn;
+    private float _boostConsumed;
+
+    // Drunk
+    private float _drunkPercentage;
+    private float _drunkTransitionSpeed;
+    private float _currentInstability;
+
+    // Bonk
+    private float _impactTimer;
+    private float _bonkCooldown;
     #endregion
     
     #region Awake Enable
@@ -139,7 +138,7 @@ public class BikeControlsOW : BikeControlsBase
             UpdateTargetSpeedFromTier();
             return;
         }
-        if (currentSpeed != 0 && targetSpeed == 0) // En roue libre, on reprend le palier juste au dessus de la vitesse actuelle
+        if (!Mathf.Approximately(currentSpeed, 0f) && Mathf.Approximately(targetSpeed, 0f)) // En roue libre, on reprend le palier juste au dessus de la vitesse actuelle
         {
             float tierSize = maxSpeed / MaxTiers;
             int tierBasedOnSpeed = Mathf.CeilToInt(currentSpeed / tierSize);
@@ -209,7 +208,7 @@ public class BikeControlsOW : BikeControlsBase
             || (isBraking && roueLibreAudio.isPlaying)
             || (isBoosting && roueLibreAudio.isPlaying)) 
             roueLibreAudio.Stop();
-        else if (targetSpeed == 0 && !isDrifting && !roueLibreAudio.isPlaying && roueLibreAudio.isActiveAndEnabled) roueLibreAudio.Play();
+        else if (Mathf.Approximately(targetSpeed, 0f) && !isDrifting && !roueLibreAudio.isPlaying && roueLibreAudio.isActiveAndEnabled) roueLibreAudio.Play();
         
         // Si on est en l'air, on ne gère pas le moteur ni le boost
         if (isGrounded)
@@ -243,10 +242,10 @@ public class BikeControlsOW : BikeControlsBase
     private void HandleBoostLogic()
     {
         if (isBroken) return;
-        bool boostPressed  = _boostAction.IsPressed();
+        bool boostPressed = _boostAction.IsPressed();
 
         // Activation du boost si on appuie ET qu'il reste du fuel
-        if (boostPressed  && boostFuel > 0)
+        if (boostPressed && boostFuel > 0)
         {
             if (!isBoosting)
             {
@@ -285,7 +284,7 @@ public class BikeControlsOW : BikeControlsBase
     }
     public void RefillBoost(float amount)
     {
-        if (isBroken)  return;
+        if (isBroken) return;
         if (boostFuel < maxBoostDuration) boostFuel += amount;
     }
     public void RemoveBoost(float amount)
@@ -357,11 +356,11 @@ public class BikeControlsOW : BikeControlsBase
     {
         turn = _steerInput * turnSpeed * Time.fixedDeltaTime;
         
-        _currentInstability = Mathf.Lerp(_currentInstability, _drunkPercentage*instabilityIntensity, Time.fixedDeltaTime*_drunkTransitionSpeed);
+        _currentInstability = Mathf.Lerp(_currentInstability, _drunkPercentage * instabilityIntensity, Time.fixedDeltaTime * _drunkTransitionSpeed);
         if (currentSpeed > 0.5f && _currentInstability > 0.001f)
         {
             float noise = Mathf.PerlinNoise(Time.time * instabilitySpeed, 0f) * 2f - 1f;
-            turn += noise * _currentInstability * Time.fixedDeltaTime;    
+            turn += noise * _currentInstability * Time.fixedDeltaTime;
         }
         
         // if (handsFree && currentSpeed > 0.5f)
@@ -478,7 +477,7 @@ public class BikeControlsOW : BikeControlsBase
     {
         if (currentSpeed > 0.1f)
         {
-            return (currentSpeed / maxSpeed * 25);
+            return currentSpeed / maxSpeed * 25;
         }
         return 0;
     }
@@ -503,7 +502,7 @@ public class BikeControlsOW : BikeControlsBase
 
     public float GetConsumedBoost()
     {
-        var normalizedBoost = _boostConsumed/maxBoostDuration;
+        var normalizedBoost = _boostConsumed / maxBoostDuration;
         _boostConsumed = 0;
         return normalizedBoost;
     }

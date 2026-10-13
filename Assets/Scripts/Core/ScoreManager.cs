@@ -5,10 +5,9 @@ using System.Linq;
 
 public class ScoreManager : MonoBehaviour
 {
-    [Header("Current Level")]
-    private LevelInfos _currentLevel; 
-
+    private LevelInfos _currentLevel;
     private List<ScoreEntry> _loadedScores = new List<ScoreEntry>();
+    private int _lastAddedIndex = -1; // Pour retenir quelle ligne surligner
 
     // --- API ---
 
@@ -33,10 +32,7 @@ public class ScoreManager : MonoBehaviour
             return true;
         float worstTopTime = _loadedScores.Last().time;
         return time < worstTopTime;
-        
     }
-    
-    private int _lastAddedIndex = -1; // Pour retenir quelle ligne surligner
 
     public void SetScore(string playerName, float time)
     {
@@ -94,14 +90,8 @@ public class ScoreManager : MonoBehaviour
         string key = "Scores_" + _currentLevel.levelID;
         ScoreWrapper wrapper = new ScoreWrapper { entries = _loadedScores };
         string json = JsonUtility.ToJson(wrapper);
-        PlayerPrefs.SetString("Scores_" + _currentLevel.levelID, json);
+        PlayerPrefs.SetString(key, json);
         PlayerPrefs.Save();
-    }
-
-    private string FormatTime(float time)
-    {
-        TimeSpan t = TimeSpan.FromSeconds(time);
-        return string.Format("{0:D2}:{1:D2}.{2:D2}", t.Minutes, t.Seconds, t.Milliseconds / 10);
     }
 
     [Serializable]

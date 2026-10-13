@@ -3,45 +3,45 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
-using System.Collections.Generic;
-using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager Instance; 
+    public static LevelManager Instance;
+
+    [Header(" --- References --- ")]
     public ScoreManager scoreManager;
     public LevelCompletedMenus levelCompletedMenus;
-    
-    // Lvl infos 
+    public PlayerInput _playerInput;
+
+    [Header(" --- Level Infos --- ")]
     public LevelInfos levelInfos;
-    
-    // Score
+
+    [Header(" --- Timer --- ")]
     public float elapsedTime;
     public TextMeshProUGUI timeDisplayedText;
-    
-    // UI
+
+    [Header(" --- Crash UI --- ")]
     public GameObject crashPanel;
     public TMP_Text crashText;
     public GameObject brokenPanel;
+
+    [Header(" --- Pause & Game Over UI --- ")]
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public TMP_Text gameOverText;
-    
-    // Player inputs
-    public PlayerInput _playerInput;
-    private InputAction _pauseAction;
-    
+
     // State machine
-    private enum  GameState
+    private enum GameState
     {
         Running,
         Paused
     }
     private GameState _gameState;
-    
+
     private bool _gameOver;
-    
-    private string[] _crashLevel0Messages = new string[]
+    private InputAction _pauseAction;
+
+    private readonly string[] _crashLevel0Messages =
     {
         "BIG PRAOUT",
         "T rincer",
@@ -61,11 +61,11 @@ public class LevelManager : MonoBehaviour
         "nan nan tas iech de fou",
         "gabriel kouyenski."
     };
-    private string[] _crashLevel1Messages = new string[]
+    private readonly string[] _crashLevel1Messages =
     {
         "Salo ! ta peter le velo !"
     };
-    private string[] _gameOverMessages = new string[]
+    private readonly string[] _gameOverMessages =
     {
         "T mort chacal",
         "T virer de chez virer tu degage"
@@ -88,7 +88,7 @@ public class LevelManager : MonoBehaviour
         if (_gameState == GameState.Running)
         {
             elapsedTime += Time.deltaTime;
-            timeDisplayedText.text = (elapsedTime).ToString("0.00");
+            timeDisplayedText.text = elapsedTime.ToString("0.00");
         }
     }
 
@@ -122,7 +122,7 @@ public class LevelManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             pausePanel.SetActive(true);
-            _gameState =  GameState.Paused;
+            _gameState = GameState.Paused;
         }
         else
         {

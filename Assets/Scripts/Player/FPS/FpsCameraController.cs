@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class FpsCameraController : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     [SerializeField] private FpsInputReader inputReader;
     [SerializeField] private Transform playerBody;
+
+    [Header(" --- Look Settings --- ")]
     [SerializeField] private float sensitivity = 150f;
     [SerializeField] private float minPitch = -85f;
     [SerializeField] private float maxPitch = 85f;

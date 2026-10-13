@@ -1,17 +1,17 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class HelpMenu : MonoBehaviour
 {
+    [Header(" --- Displays --- ")]
     public GameObject ControlsDisplay;
     public GameObject DashboardDisplay;
-    
+
     public void BackToMenu()
     {
         SceneManager.LoadScene("Scenes/1_Menu");
     }
-    
+
     public void SetControlsDisplay()
     {
         DashboardDisplay.SetActive(false);

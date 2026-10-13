@@ -1,10 +1,9 @@
- using UnityEngine;
+using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-using System;
 
 [System.Serializable]
 public class MenuOption
@@ -16,34 +15,34 @@ public class MenuOption
 
 public class MenuGeneric : MonoBehaviour
 {
-    [Header("Options")]
+    [Header(" --- Options --- ")]
     public List<MenuOption> options = new List<MenuOption>();
     
-    [Header("Visual Settings")]
+    [Header(" --- Visual Settings --- ")]
     public Color activeColor = Color.yellow;
     public Color inactiveColor = Color.white;
     public float baseScale = 1f;
     public float selectedScale = 1.2f;
     
-    [Header("Juice Settings (Wave & Click)")]
+    [Header(" --- Juice Settings (Wave & Click) --- ")]
     public float pulseSpeed = 3f;
     public float pulseAmount = 0.1f;
     public float clickPunchScale = 1.5f;
     public float clickDuration = 0.1f;
     
-    [Header("Input")]
+    [Header(" --- Input --- ")]
     public PlayerInput playerInput;
-    private InputAction _navigateAction;
-    private InputAction _submitAction;
-    
-    [Header("Audio Settings")]
+
+    [Header(" --- Audio Settings --- ")]
     public AudioClip navigateSound;
     public AudioClip submitSound;
     [Range(0, 1)] public float uiVolume = 0.7f;
 
-    private int _currentIndex = 0;
+    private InputAction _navigateAction;
+    private InputAction _submitAction;
+    private int _currentIndex;
     private bool _canInput = true;
-    private bool _isClicking = false;
+    private bool _isClicking;
     private const float InputCooldown = 0.1f;
     private float _activationCooldown = 0.2f;
 
@@ -163,7 +162,7 @@ public class MenuGeneric : MonoBehaviour
         
         _isClicking = false;
         
-        if(targetTxt != null) targetTxt.localScale = Vector3.one * selectedScale;
+        if (targetTxt != null) targetTxt.localScale = Vector3.one * selectedScale;
     }
 
     private void ResetAllScales()

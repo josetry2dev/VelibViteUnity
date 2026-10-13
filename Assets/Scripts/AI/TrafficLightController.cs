@@ -4,10 +4,10 @@ public class TrafficLightController : MonoBehaviour
 {
     public enum LightState { Green, Yellow, Red }
 
-    [Header("État Actuel")]
+    [Header(" --- Current State --- ")]
     public LightState currentState;
 
-    [Header("Références Visuelles")]
+    [Header(" --- Visual References --- ")]
     public GameObject[] greenLightsObject;
     public GameObject[] yellowLightsObject;
     public GameObject[] redLightsObject;

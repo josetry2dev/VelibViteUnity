@@ -25,8 +25,8 @@ public class BikeHealthSystem : MonoBehaviour
 
     // Etat
     private int _currentLives;
-    private bool _isInvincible = false;
-    private bool _isRespawning = false;
+    private bool _isInvincible;
+    private bool _isRespawning;
     private Vector3 _lastSafePosition;
     private Quaternion _lastSafeRotation;
 
@@ -66,14 +66,14 @@ public class BikeHealthSystem : MonoBehaviour
             if (_currentLives == 0) // Crash level 1 
             {
                 StartCoroutine(RespawnSequence());
-                LevelManager.Instance.OnCrash(1, respawnDelay*2);
+                LevelManager.Instance.OnCrash(1, respawnDelay * 2);
                 owScript.SetBrokenMode();
                 return;
             }
 
             if (_currentLives <= 0) // Crash level 2 
             {
-                LevelManager.Instance.OnCrash(2, respawnDelay*2);
+                LevelManager.Instance.OnCrash(2, respawnDelay * 2);
             }
         }
         else LevelManager.Instance.OnCrash(2, respawnDelay);
@@ -108,7 +108,7 @@ public class BikeHealthSystem : MonoBehaviour
 
         yield return new WaitForSeconds(respawnDelay);
         
-        if (bikeCameraEffect != null) bikeControls.ResetBikePhysics(_lastSafePosition, _lastSafeRotation);
+        if (bikeControls != null) bikeControls.ResetBikePhysics(_lastSafePosition, _lastSafeRotation);
         if (bikeControls != null) bikeControls.enabled = true;
         if (bikeCamera != null) bikeCamera.ResetCamera();
         if (cameraController != null) cameraController.enabled = true;
@@ -120,11 +120,11 @@ public class BikeHealthSystem : MonoBehaviour
         {
             timer += 0.1f;
             isVisible = !isVisible;
-            if(bikeMeshRoot != null) bikeMeshRoot.SetActive(isVisible);
+            if (bikeMeshRoot != null) bikeMeshRoot.SetActive(isVisible);
             yield return new WaitForSeconds(0.1f);
         }
 
-        if(bikeMeshRoot != null) bikeMeshRoot.SetActive(true);
+        if (bikeMeshRoot != null) bikeMeshRoot.SetActive(true);
         _isInvincible = false;
         _isRespawning = false;
     }

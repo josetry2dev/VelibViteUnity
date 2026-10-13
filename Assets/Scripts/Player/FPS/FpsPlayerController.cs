@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,41 +11,43 @@ public class FpsPlayerController : MonoBehaviour
         Prone
     }
 
-    [Header("References")]
+    [Header(" --- References --- ")]
     [SerializeField] private Transform cameraPivot;
 
-    [Header("Movement Speeds")]
+    [Header(" --- Movement Speeds --- ")]
     [SerializeField, Min(0f)] private float walkSpeed = 4.5f;
     [SerializeField, Min(0f)] private float sprintSpeed = 7.5f;
     [SerializeField, Min(0f)] private float crouchSpeed = 2.5f;
     [SerializeField, Min(0f)] private float proneSpeed = 1.2f;
 
-    [Header("Movement Response")]
+    [Header(" --- Movement Response --- ")]
     [SerializeField, Min(0f)] private float groundAcceleration = 25f;
     [SerializeField, Min(0f)] private float airAcceleration = 10f;
     [SerializeField, Min(0f)] private float stoppingDeceleration = 30f;
     [SerializeField, Min(0f)] private float movementDeadzone = 0.15f;
 
-    [Header("Jump and Gravity")]
+    [Header(" --- Jump & Gravity --- ")]
     [SerializeField, Min(0f)] private float jumpHeight = 1.2f;
     [SerializeField] private float gravity = -25f;
     [SerializeField, Min(0f)] private float groundStickForce = 2f;
 
-    [Header("Posture Heights")]
+    [Header(" --- Posture Heights --- ")]
     [SerializeField, Min(0.5f)] private float standingHeight = 1.8f;
     [SerializeField, Min(0.5f)] private float crouchingHeight = 1.15f;
     [SerializeField, Min(0.3f)] private float proneHeight = 0.55f;
 
+    [Header(" --- Posture Camera Heights --- ")]
     [SerializeField, Min(0f)] private float standingCameraHeight = 1.62f;
     [SerializeField, Min(0f)] private float crouchingCameraHeight = 0.95f;
     [SerializeField, Min(0f)] private float proneCameraHeight = 0.35f;
 
+    [Header(" --- Posture Transition --- ")]
     [SerializeField, Min(0f)] private float postureTransitionSpeed = 10f;
 
-    [Header("Collision")]
+    [Header(" --- Collision --- ")]
     [SerializeField, Min(0.01f)] private float capsuleRadius = 0.3f;
 
-    [Header("Input")]
+    [Header(" --- Input --- ")]
     [SerializeField, Min(0f)] private float longPressThreshold = 0.45f;
 
     public Posture CurrentPosture { get; private set; } = Posture.Standing;

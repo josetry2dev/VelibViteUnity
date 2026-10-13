@@ -8,15 +8,14 @@ using System.Collections;
 
 public class LevelCompletedMenus : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public ScoreManager scoreManager;
     public GameObject nameSelectorPanel;
-    
-    private float _elapsedTime;
-    private LevelInfos _levelInfos;
-    
+
+    [Header(" --- Input Settings --- ")]
     public float submitDelay;
-    
-    // Level Completed 1 
+
+    [Header(" --- Level Completed 1 : Panel --- ")]
     public GameObject levelCompleted1Panel;
     public TMP_Text velibNumberTxt;
     public TMP_Text dateTxt;
@@ -25,17 +24,24 @@ public class LevelCompletedMenus : MonoBehaviour
     public TMP_Text timeTxt;
     public TMP_Text kilometersTxt;
     public TMP_Text averageSpeedTxt;
+
+    [Header(" --- Level Completed 1 : Medals --- ")]
     public GameObject goldMedal;
     public GameObject silverMedal;
     public GameObject bronzeMedal;
-    
-    // Level Completed 2
-    public string playerName;
+
+    [Header(" --- Level Completed 2 : Top 10 --- ")]
     public GameObject levelCompleted2Panel;
+    public TextMeshProUGUI levelNameTxt;
     public TextMeshProUGUI[] top10Entries;
     public Color highlightColor = Color.red;
     public Color normalColor = Color.black;
-    public TextMeshProUGUI levelNameTxt;
+
+    [Header(" --- Player --- ")]
+    public string playerName;
+
+    private float _elapsedTime;
+    private LevelInfos _levelInfos;
 
     private void Update()
     {
@@ -104,14 +110,14 @@ public class LevelCompletedMenus : MonoBehaviour
                 goldMedal.SetActive(true);
                 break;
         }
-        timeTxt.text = (_elapsedTime).ToString("0.00");
-        dateTxt.text = DateTime.Now.Month.ToString() + "." + DateTime.Now.Day.ToString();
+        timeTxt.text = _elapsedTime.ToString("0.00");
+        dateTxt.text = DateTime.Now.Month + "." + DateTime.Now.Day;
         // averageSpeedTxt.text = flowManager.getAverageSpeed().ToString("0.00");
         averageSpeedTxt.text = "TODO";
         levelArrivalTxt.text = _levelInfos.arrival;
         levelDepartureTxt.text = _levelInfos.departure;
         kilometersTxt.text = _levelInfos.kilometers;
-        velibNumberTxt.text = Random.Range(1,9999).ToString();
+        velibNumberTxt.text = Random.Range(1, 9999).ToString();
         levelCompleted1Panel.SetActive(true);
     }
     

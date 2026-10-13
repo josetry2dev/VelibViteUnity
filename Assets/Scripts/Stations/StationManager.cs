@@ -8,32 +8,31 @@ using System;
 public class StationManager : MonoBehaviour
 {
     #region Params
-    
-    private bool _isActive;
-    
-    [Header("Caméra")]
+
+    [Header(" --- Camera Settings --- ")]
     public GameObject cameraPrefab;
     public Transform[] bikePositions;
     public float smoothSpeed = 5f;
     public float shakeIntensity = 0.1f;
-    private GameObject _stationCameraInstance;
-    private Transform _stationCameraTransform;
-    private Transform _targetTransform;
-    
-    [Header("Spawn")]
+
+    [Header(" --- Spawn Settings --- ")]
     public Transform spawnPosition;
     public GameObject playerPrefab;
-    
-    [Header("Input")]
+
+    [Header(" --- Input --- ")]
     public PlayerInput playerInput;
-    private InputAction _navigateAction;
-    private InputAction _submitAction;
-    
-    [Header("UI Panels & Text")]
+
+    [Header(" --- Selection Settings --- ")]
+    public float probVeloPourri = 0.90f;
+    public float messageTime = 2.0f;
+
+    [Header(" --- UI Panels & Text --- ")]
     public GameObject panelSelection;
     public TMP_Text errorText;
     public Button selectBikeButton;
-    public string[] messagesErrors=
+
+    [Header(" --- Messages --- ")]
+    public string[] messagesErrors =
     {
         "Pu de batteri",
         "Wsh le pneu il est crever",
@@ -52,21 +51,29 @@ public class StationManager : MonoBehaviour
         "tention les filles jpasse en mode enflure",
         "missil en approche"
     };
-    
-    
-    [Header("Selection Logic")]
+
+    // Camera
+    private GameObject _stationCameraInstance;
+    private Transform _stationCameraTransform;
+    private Transform _targetTransform;
+
+    // Input
+    private InputAction _navigateAction;
+    private InputAction _submitAction;
+
+    // Selection logic
+    private bool _isActive;
     private int _currentIndex;
-    private string[] _bikeStatus; 
+    private string[] _bikeStatus;
     private int _bikesTriedCount;
-    public float probVeloPourri = 0.90f;
-    public float messageTime = 2.0f;
+    private bool _isSuccess;
+    private Action _onSuccessCallback;
+
+    // Spam challenge
     private int _spamCount;
     private float _spamTimer;
     private bool _isSpamMode;
-    private string _specialErrorMessage = "Jarrive pas le sortir ptn";
-    private bool _isSuccess;
-    
-    private Action _onSuccessCallback; 
+    private const string SpecialErrorMessage = "Jarrive pas le sortir ptn";
     
     #endregion
     
@@ -87,7 +94,7 @@ public class StationManager : MonoBehaviour
         _isSuccess = false;
         _onSuccessCallback = null;
         panelSelection.SetActive(true);
-        if(errorText) errorText.text = "";
+        if (errorText) errorText.text = "";
         _navigateAction.performed += OnNavigatePerformed;
         _submitAction.performed += OnSubmitPerformed;
         
@@ -151,7 +158,7 @@ public class StationManager : MonoBehaviour
         _isSpamMode = false;
         _currentIndex = (_currentIndex + 1) % bikePositions.Length;
         _targetTransform = bikePositions[_currentIndex];
-        if(errorText) errorText.text = ""; // Efface l'erreur quand on change
+        if (errorText) errorText.text = ""; // Efface l'erreur quand on change
     }
     public void PrevBike()
     {
@@ -159,7 +166,7 @@ public class StationManager : MonoBehaviour
         _currentIndex--;
         if (_currentIndex < 0) _currentIndex = bikePositions.Length - 1;
         _targetTransform = bikePositions[_currentIndex];
-        if(errorText) errorText.text = "";
+        if (errorText) errorText.text = "";
     }
 
     public void TrySelectBike()
@@ -176,7 +183,7 @@ public class StationManager : MonoBehaviour
             ProcessResult(_bikeStatus[_currentIndex]);
             return;
         }
-        string result = "";
+        string result;
         if (_bikesTriedCount == bikePositions.Length - 1) result = "SUCCESS";
         else
         {
@@ -200,7 +207,7 @@ public class StationManager : MonoBehaviour
     {
         // TODO a changer 
         _isActive = false;
-        if (_onSuccessCallback != null)  _onSuccessCallback();
+        _onSuccessCallback?.Invoke();
         Spawn();
     }
 
@@ -210,7 +217,7 @@ public class StationManager : MonoBehaviour
         Destroy(_stationCameraInstance);
         // if (!playerInput.gameObject.CompareTag("Player")) Destroy(playerInput.gameObject);
         Instantiate(playerPrefab, spawnPosition.position, spawnPosition.rotation);
-        this.enabled = false;
+        enabled = false;
     }
     private void ProcessResult(string result)
     {
@@ -220,9 +227,9 @@ public class StationManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, messagesSuccess.Length);
             errorText.color = Color.white;
             errorText.text = messagesSuccess[index];
-            Invoke("StartGame", messageTime);
+            Invoke(nameof(StartGame), messageTime);
         }
-        else if (result == _specialErrorMessage)
+        else if (result == SpecialErrorMessage)
         {
             errorText.color = Color.red;
             errorText.text = result;
@@ -254,10 +261,10 @@ public class StationManager : MonoBehaviour
         if (_spamCount >= 10 && _spamTimer <= 2f)
         {
             _isSpamMode = false;
-            _isSuccess =  true;
+            _isSuccess = true;
             errorText.text = "voilaaa bordel tu vois quand tu veux";
             errorText.color = Color.white;
-            Invoke("StartGame", messageTime);
+            Invoke(nameof(StartGame), messageTime);
         }
     }
 

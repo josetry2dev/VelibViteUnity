@@ -2,16 +2,14 @@ using UnityEngine;
 
 public class CarrefourManager : MonoBehaviour
 {
-    [Header("Distance")]
+    [Header(" --- Distance Settings --- ")]
     public float activationDistance = 150f; // Distance pour commencer à faire bouger les voitures
     public float destroyDistance = 30f; // Distance DERRIÈRE le joueur pour supprimer le carrefour
 
     private Transform player;
-    private bool isActive = false;
-    
-    // Référence aux spawners pour les allumer/éteindre
-    private CarSpawner[] spawners;
-    
+    private bool isActive;
+    private CarSpawner[] spawners; // Référence aux spawners pour les allumer/éteindre
+
     void Start()
     {
         // Trouve le joueur via le Tag "Player" (assure-toi que ton joueur a ce tag)
@@ -19,7 +17,7 @@ public class CarrefourManager : MonoBehaviour
         if (p != null) player = p.transform;
 
         spawners = GetComponentsInChildren<CarSpawner>();
-        
+
         // Au début, on désactive les spawners pour économiser
         ToggleSpawners(false);
     }

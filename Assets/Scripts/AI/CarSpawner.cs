@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class CarSpawner : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public GameObject carPrefab;
+
+    [Header(" --- Spawn Settings --- ")]
     public float spawnRate = 3f;
     public float spawnCheckRadius = 3f;
-    
-    // NOUVEAU : On définit quels layers empêchent le spawn
-    public LayerMask blockingLayer; 
+    public LayerMask blockingLayer; // Layers qui empêchent le spawn
 
     private float timer;
 
@@ -24,15 +25,12 @@ public class CarSpawner : MonoBehaviour
 
     void TrySpawnCar()
     {
-        // Sécurité 1 : Si le prefab n'est pas assigné ou a été détruit
-        if (carPrefab == null) 
+        // Sécurité : Si le prefab n'est pas assigné ou a été détruit
+        if (carPrefab == null)
         {
             Debug.LogWarning("Attention : Le CarPrefab est manquant sur " + gameObject.name);
-            return; 
+            return;
         }
-
-        // Sécurité 2 : Si le Spawner lui-même est en train d'être détruit (optimisation manager)
-        if (this == null || transform == null) return;
 
         if (!Physics.CheckSphere(transform.position, spawnCheckRadius, blockingLayer))
         {

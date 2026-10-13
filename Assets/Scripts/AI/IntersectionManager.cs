@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class IntersectionManager : MonoBehaviour
 {
-    [Header("Les Feux")]
+    [Header(" --- Traffic Lights --- ")]
     public TrafficLightController[] roadALights; // Les feux de la route 1 (ex: Nord/Sud)
     public TrafficLightController[] roadBLights; // Les feux de la route 2 (ex: Est/Ouest)
 
-    [Header("Timers")]
+    [Header(" --- Timers --- ")]
     public float greenDuration = 5f;
     public float yellowDuration = 2f;
     public float allRedSafetyDuration = 1f; // Petit temps où tout est rouge pour vider le carrefour
 
     private float timer;
-    private int stepIndex = 0;
+    private int stepIndex;
 
     void Start()
     {
@@ -67,9 +67,9 @@ public class IntersectionManager : MonoBehaviour
     // Fonction utilitaire pour changer tout un groupe de feux d'un coup
     void SetLights(TrafficLightController[] lights, TrafficLightController.LightState state)
     {
-        foreach (var light in lights)
+        foreach (var trafficLight in lights)
         {
-            light.SetLightState(state);
+            trafficLight.SetLightState(state);
         }
     }
 }

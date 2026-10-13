@@ -2,16 +2,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Collections;
-using TMPro;
 
 public class LevelSelectMenu : MonoBehaviour
 {
+    [Header(" --- Levels --- ")]
     public List<LevelInfos> allLevels;
+
+    [Header(" --- Panels --- ")]
     public GameObject startPanel;
     public GameObject levelSelectPanel;
     public GameObject lockedLevelText;
     
-    void LoadLevel(int  index)
+    void LoadLevel(int index)
     {
         LevelInfos selectedLvl = allLevels[index];
         bool isUnlocked = PlayerPrefs.GetInt("Unlocked_" + selectedLvl.levelID, 0) == 1;

@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 public class SmsKeyIcon : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public RawImage image;
+
     public void Setup(Vector2 dir)
     {
         float rotation = 0f;

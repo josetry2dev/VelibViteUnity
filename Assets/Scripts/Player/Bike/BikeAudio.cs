@@ -2,20 +2,21 @@ using UnityEngine;
 
 public class BikeAudio : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     public BikeControlsBase bikeControls;
     public AudioSource motorSource;
     public AudioSource brakeSource;
 
-    [Header("Motor Settings")]
+    [Header(" --- Motor Settings --- ")]
     public float minPitch = 0.2f;
     public float maxPitch = 1.5f;
     public float maxSpeed = 25f; // Vitesse à laquelle le pitch est au max
     public float motorBaseVolume = 0.1f;
 
-    [Header("Brake Settings")]
+    [Header(" --- Brake Settings --- ")]
     public float brakeFadeSpeed = 5f; // Vitesse à laquelle le son de frein apparaît/disparaît
-    private float _targetBrakeVolume = 0f;
+
+    private float _targetBrakeVolume;
 
     private void Update()
     {

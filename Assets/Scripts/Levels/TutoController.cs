@@ -1,28 +1,30 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+
 public class TutoController : MonoBehaviour
 {
-    [Header("Ref")]
-    public PlayerInput targetPlayerInput; 
+    [Header(" --- References --- ")]
+    public PlayerInput targetPlayerInput;
 
-    [Header("UI Elements")]
+    [Header(" --- UI Button Sprites --- ")]
     public GameObject l2Sprite;
     public GameObject r2Sprite;
     public GameObject r1Sprite;
     public GameObject xSprite;
     public GameObject oSprite;
 
+    [Header(" --- Truck Settings --- ")]
     public GameObject camionObject;
     public float truckSpeed = 3f;
-    
+
+    [Header(" --- Debug --- ")]
+    [SerializeField] private int currentStep;
+
     private InputAction _brakeAction;      // L2
     private InputAction _boostAction;      // L1
     private InputAction _driftAction;      // L2
     private InputAction _accelerateAction; // X
-    private InputAction _jumpAction;       // O
-
-    [SerializeField] private int currentStep = 0;
 
     void Start()
     {
@@ -33,7 +35,6 @@ public class TutoController : MonoBehaviour
         _brakeAction = targetPlayerInput.actions["Brake"];
         _boostAction = targetPlayerInput.actions["Boost"];
         _accelerateAction = targetPlayerInput.actions["Accelerate"];
-        _jumpAction = targetPlayerInput.actions["Jump"];
         _driftAction = targetPlayerInput.actions["Drift"];
 
         l2Sprite.SetActive(true);
@@ -84,7 +85,7 @@ public class TutoController : MonoBehaviour
                 }
                 break;
             case 4: // Jump
-                if (oSprite.activeSelf == false) oSprite.SetActive(true);
+                if (!oSprite.activeSelf) oSprite.SetActive(true);
                 // wait for trig zone 
                 break;
             case 5:
@@ -124,7 +125,7 @@ public class TutoController : MonoBehaviour
         {
             xSprite.SetActive(true);
             l2Sprite.SetActive(false);
-            currentStep=2;
+            currentStep = 2;
             return;
         }
         

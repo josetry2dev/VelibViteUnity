@@ -1,20 +1,19 @@
 using System.Collections;
 using UnityEngine;
+
 public class RandomFlash : MonoBehaviour
 {
-    private Light myLight;
-    private AudioSource flashSound;
-
-    [Header("Timing Settings")]
+    [Header(" --- Timing Settings --- ")]
     public float minWaitTime = 2.0f;
     public float maxWaitTime = 7.0f;
-    
-    [Header("Flash Duration")]
+
+    [Header(" --- Flash Settings --- ")]
     public float flashDuration = 0.1f;
     public float flashIntensity = 10.0f;
 
-    // ON GARDE UNE RÉFÉRENCE POUR POUVOIR L'ARRÊTER
-    private Coroutine flashRoutine;
+    private Light myLight;
+    private AudioSource flashSound;
+    private Coroutine flashRoutine; // ON GARDE UNE RÉFÉRENCE POUR POUVOIR L'ARRÊTER
 
     private void Awake()
     {
@@ -74,7 +73,7 @@ public class RandomFlash : MonoBehaviour
     private void PerformFlash()
     {
         // Vérification de sécurité au cas où myLight soit null
-        if(myLight == null) return;
+        if (myLight == null) return;
 
         myLight.intensity = flashIntensity;
 

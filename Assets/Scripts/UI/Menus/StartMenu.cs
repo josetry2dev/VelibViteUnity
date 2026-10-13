@@ -1,15 +1,19 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
+    [Header(" --- References --- ")]
     public SmsManager smsManager;
+    public StationLauncher stationLauncher;
+
+    [Header(" --- Dialogues --- ")]
     public SmsDialogue startDialogue;
+
+    [Header(" --- Panels --- ")]
     public GameObject startPanel;
     public GameObject levelSelectPanel;
-    public StationLauncher stationLauncher;
-    
+
     public void StartFirstDialogue()
     {
         smsManager.StartDialogue(startDialogue, stationLauncher.LaunchStation);

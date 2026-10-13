@@ -3,23 +3,23 @@ using UnityEngine.InputSystem;
 
 public class BikeControlsOrbit : MonoBehaviour
 {
-    [Header("References")]
+    [Header(" --- References --- ")]
     [SerializeField] private Transform camOrigin;       // Le pivot principal au centre du vélo
     [SerializeField] private Transform yRotationRig;    // Le sous-pivot pour la rotation verticale
     [SerializeField] private Transform mainCamera;      // La caméra elle-même
     [SerializeField] private PlayerInput playerInput;   // Ton PlayerInput
 
-    [Header("UI Billboarding")]
+    [Header(" --- UI Billboarding --- ")]
     // Liste de tous tes éléments d'UI (tu peux les glisser-déposer dans l'inspecteur)
     [SerializeField] private GameObject[] controlsUI; 
 
-    [Header("Rotation Settings")]
+    [Header(" --- Rotation Settings --- ")]
     [SerializeField] private float rotationSpeedH = 200f;
     [SerializeField] private float rotationSpeedV = 150f;
     [SerializeField] private float minVerticalAngle = -10f; // Pour pas regarder sous le sol
     [SerializeField] private float maxVerticalAngle = 60f;  // Pour pas regarder le ciel à la verticale
 
-    [Header("Zoom Settings")]
+    [Header(" --- Zoom Settings --- ")]
     [SerializeField] private float zoomSpeed = 10f;
     [SerializeField] private float minZoomDistance = 2f; // Plus près c'est moche
     [SerializeField] private float maxZoomDistance = 10f; // Plus loin on voit plus rien
