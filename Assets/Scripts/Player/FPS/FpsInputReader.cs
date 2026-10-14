@@ -49,8 +49,8 @@ public class FpsInputReader : MonoBehaviour
 
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
-        _jumpAction = _playerInput.actions["Accelerate"];
-        _sprintAction = _playerInput.actions["Sonnette"];
-        _postureAction = _playerInput.actions["Jump"];
+        _jumpAction = _playerInput.actions["Jump"];
+        _sprintAction = _playerInput.actions["Sprint"];
+        _postureAction = _playerInput.actions["Crouch"];
     }
 }

@@ -100,7 +100,7 @@ public class BikeControlsOW : BikeControlsBase
         _brakeAction = _playerInput.actions["Brake"];
         _driftAction = _playerInput.actions["Drift"];
         _boostAction = _playerInput.actions["Boost"];
-        _jumpAction = _playerInput.actions["Jump"];
+        _jumpAction = _playerInput.actions["BikeJump"];
         _sonnetteAction = _playerInput.actions["Sonnette"];
 
         roueLibreAudio.volume = 0.2f;
@@ -113,7 +113,7 @@ public class BikeControlsOW : BikeControlsBase
         // Logique spécifique pour la Marche Arrière
         _brakeAction.started += OnBrakeStarted;
         _brakeAction.canceled += OnBrakeCanceled;
-        _jumpAction.canceled += OnJumpPressed;
+        _jumpAction.started += OnJumpPressed;
         _sonnetteAction.started += OnSonnettePressed;
     }
     
@@ -122,7 +122,7 @@ public class BikeControlsOW : BikeControlsBase
         _accelerateAction.started -= OnAcceleratePressed;
         _brakeAction.started -= OnBrakeStarted;
         _brakeAction.canceled -= OnBrakeCanceled;
-        _jumpAction.canceled -= OnJumpPressed;
+        _jumpAction.started -= OnJumpPressed;
         _sonnetteAction.started -= OnSonnettePressed;
     }
     #endregion

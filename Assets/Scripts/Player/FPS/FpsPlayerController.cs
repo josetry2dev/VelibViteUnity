@@ -94,9 +94,9 @@ public class FpsPlayerController : MonoBehaviour
 
         // Retrieve each action independently from the shared asset.
         _moveAction = _playerInput.actions.FindAction("Move", true);
-        _jumpAction = _playerInput.actions.FindAction("Accelerate", true);
-        _sprintAction = _playerInput.actions.FindAction("Sonnette", true);
-        _postureAction = _playerInput.actions.FindAction("Jump", true);
+        _jumpAction = _playerInput.actions.FindAction("Jump", true);
+        _sprintAction = _playerInput.actions.FindAction("Sprint", true);
+        _postureAction = _playerInput.actions.FindAction("Crouch", true);
 
         _controller.radius = capsuleRadius;
         _controller.height = standingHeight;

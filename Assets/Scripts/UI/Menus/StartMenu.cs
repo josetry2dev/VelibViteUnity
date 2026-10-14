@@ -7,6 +7,29 @@ public class StartMenu : MonoBehaviour
     public GameObject startPanel;
     public GameObject levelSelectPanel;
 
+    // L'anim d'intro du panel ne se joue qu'au lancement du jeu
+    private static bool _introPlayed;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => _introPlayed = false;
+
+    private void Start()
+    {
+        Animator animator = startPanel.GetComponent<Animator>();
+        if (animator == null) return;
+
+        // Garde l'état de l'anim quand on désactive/réactive le panel (aller-retour level select)
+        animator.keepAnimatorStateOnDisable = true;
+
+        if (_introPlayed)
+        {
+            // Retour au menu : on saute directement à la fin de l'anim
+            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 1f);
+            animator.Update(0f);
+        }
+        _introPlayed = true;
+    }
+
     public void StartGame()
     {
         // Premier lancement : on force le passage par l'écran d'aide avant le tuto
