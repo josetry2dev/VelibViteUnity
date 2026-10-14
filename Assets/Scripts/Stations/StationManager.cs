@@ -18,6 +18,8 @@ public class StationManager : MonoBehaviour
     [Header(" --- Spawn Settings --- ")]
     public Transform spawnPosition;
     public GameObject playerPrefab;
+    [Tooltip("Décoche si le joueur est déjà dans la scène et activé par un autre script (ex : intro du tuto)")]
+    public bool spawnPlayerPrefab = true;
 
     [Header(" --- Input --- ")]
     public PlayerInput playerInput;
@@ -213,10 +215,9 @@ public class StationManager : MonoBehaviour
 
     private void Spawn()
     {
-        
         Destroy(_stationCameraInstance);
         // if (!playerInput.gameObject.CompareTag("Player")) Destroy(playerInput.gameObject);
-        Instantiate(playerPrefab, spawnPosition.position, spawnPosition.rotation);
+        if (spawnPlayerPrefab) Instantiate(playerPrefab, spawnPosition.position, spawnPosition.rotation);
         enabled = false;
     }
     private void ProcessResult(string result)

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -100,5 +101,20 @@ public class StationLauncher : MonoBehaviour
     {
         // ScoreManager.Instance.StartRun();
         SceneManager.LoadScene(1);
+    }
+
+    // Lance la sélection de vélo depuis un point de caméra donné (ex : intro du tuto)
+    public void LaunchStationFrom(Transform cameraStart, Action onComplete)
+    {
+        stationManager.enabled = true;
+        enterStationPanel.SetActive(false);
+        stationManager.StartSelection(cameraStart, onComplete);
+        _hasJustSpawn = true;
+    }
+
+    // Évite d'afficher le panel "entrer dans la station" quand le joueur apparaît directement dedans
+    public void IgnoreNextPlayerEnter()
+    {
+        _hasJustSpawn = true;
     }
 }

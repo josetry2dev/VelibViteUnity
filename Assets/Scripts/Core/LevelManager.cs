@@ -17,6 +17,8 @@ public class LevelManager : MonoBehaviour
     public LevelInfos levelInfos;
 
     [Header(" --- Timer --- ")]
+    [Tooltip("Décoche si le timer est lancé par un autre script (ex : l'intro du tuto quand on débloque le vélo)")]
+    public bool startTimerOnLoad = true;
     public float elapsedTime;
     public TextMeshProUGUI timeDisplayedText;
 
@@ -71,9 +73,18 @@ public class LevelManager : MonoBehaviour
         "T virer de chez virer tu degage"
     };
     
+    // Vrai si la scène a été chargée en mode "skip intro" (Restart ou LevelSelect contre la montre)
+    public static bool SkipIntro { get; private set; }
+    private static bool _skipIntroRequested;
+    private bool _timerStarted;
+
     void Awake()
     {
         Instance = this;
+        SkipIntro = _skipIntroRequested;
+        _skipIntroRequested = false;
+        _timerStarted = startTimerOnLoad;
+
         // Inputs
         _pauseAction = _playerInput.actions["Pause"];
         
@@ -85,7 +96,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (_gameState == GameState.Running)
+        if (_gameState == GameState.Running && _timerStarted)
         {
             elapsedTime += Time.deltaTime;
             timeDisplayedText.text = elapsedTime.ToString("0.00");
@@ -136,7 +147,19 @@ public class LevelManager : MonoBehaviour
     {
         TogglePause();
         _gameOver = false;
+        RequestSkipIntro();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void StartTimer()
+    {
+        _timerStarted = true;
+    }
+
+    // A appeler juste avant de charger un niveau pour qu'il saute son intro
+    public static void RequestSkipIntro()
+    {
+        _skipIntroRequested = true;
     }
     
     public void QuitGame()

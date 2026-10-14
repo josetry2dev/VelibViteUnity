@@ -20,6 +20,7 @@ public class LevelSelectMenu : MonoBehaviour
         
         if (isUnlocked)
         {
+            LevelManager.RequestSkipIntro(); // Contre la montre : pas d'intro
             SceneManager.LoadScene(selectedLvl.sceneName);
         }
         else

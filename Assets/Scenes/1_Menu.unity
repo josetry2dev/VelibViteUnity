@@ -1306,17 +1306,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c853ada4eb6e67b4187a815f6a088c3b, type: 3}
---- !u!114 &641856943 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2070288763366746972, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
-  m_PrefabInstance: {fileID: 318905452}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d747ea7a2b2554f43b6342d2db5cc212, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &659377445
 GameObject:
   m_ObjectHideFlags: 0
@@ -3034,11 +3023,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317a0f7d3d4df3b42b212b01afc96dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  smsManager: {fileID: 641856943}
-  startDialogue: {fileID: 11400000, guid: f5d1eeaa81057c74c8e4c10b2b09a7f1, type: 2}
   startPanel: {fileID: 1318378273}
   levelSelectPanel: {fileID: 659377445}
-  stationLauncher: {fileID: 1463589048}
 --- !u!114 &1318378279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3059,7 +3045,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1318378278}
           m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-          m_MethodName: StartFirstDialogue
+          m_MethodName: StartGame
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3303,17 +3289,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455477394}
   m_CullTransparentMesh: 1
---- !u!114 &1463589048 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3639509674264972414, guid: 09dbf341867200244b21cc69a7d86558, type: 3}
-  m_PrefabInstance: {fileID: 956617101}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae826fd9f0000d44a831c84eff8f113b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &1474199233
 GameObject:
   m_ObjectHideFlags: 0

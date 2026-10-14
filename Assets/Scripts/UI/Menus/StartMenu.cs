@@ -3,21 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
-    [Header(" --- References --- ")]
-    public SmsManager smsManager;
-    public StationLauncher stationLauncher;
-
-    [Header(" --- Dialogues --- ")]
-    public SmsDialogue startDialogue;
-
     [Header(" --- Panels --- ")]
     public GameObject startPanel;
     public GameObject levelSelectPanel;
 
-    public void StartFirstDialogue()
+    public void StartGame()
     {
-        smsManager.StartDialogue(startDialogue, stationLauncher.LaunchStation);
-        startPanel.SetActive(false);
+        // Premier lancement : on force le passage par l'écran d'aide avant le tuto
+        if (!HelpMenu.HasSeenHelp())
+        {
+            HelpMenu.launchTutoOnExit = true;
+            SceneManager.LoadScene("Scenes/00_Help");
+            return;
+        }
+        SceneManager.LoadScene("Scenes/2_Tuto");
     }
 
     public void GoToLevelSelect(int index)
@@ -30,17 +29,17 @@ public class StartMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Scenes/00_Help");
     }
-    
+
     public void GoToExpo()
     {
         SceneManager.LoadScene("Scenes/01_Expo");
     }
-    
+
     public void GoToStudio()
     {
         SceneManager.LoadScene("Scenes/02_Studio");
     }
-    
+
     public void QuitGame()
     {
         Application.Quit();
