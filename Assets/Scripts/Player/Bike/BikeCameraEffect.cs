@@ -7,6 +7,7 @@ public class BikeCameraEffect : MonoBehaviour
     public Camera targetCamera;
 
     [Header(" --- FOV Settings --- ")]
+    [Tooltip("FOV de référence : le FOV réel vient des réglages joueur (GameSettings.Fov), le boost garde l'écart boostFOV - normalFOV")]
     public float normalFOV = 65f;
     public float boostFOV = 85f;
     public float transitionSpeed = 5f;
@@ -22,12 +23,32 @@ public class BikeCameraEffect : MonoBehaviour
     private Vector3 _initialLocalPos;
     private Quaternion _initialLocalRotation;
 
+    private float CurrentNormalFOV => GameSettings.Fov;
+    private float CurrentBoostFOV => GameSettings.Fov + (boostFOV - normalFOV);
+
+    void OnEnable()
+    {
+        GameSettings.Changed += OnSettingsChanged;
+    }
+
+    void OnDisable()
+    {
+        GameSettings.Changed -= OnSettingsChanged;
+    }
+
+    // Applique le nouveau FOV tout de suite (le jeu est en pause, le Lerp ne tourne pas)
+    private void OnSettingsChanged()
+    {
+        if (targetCamera == null || _isCrashed) return;
+        targetCamera.fieldOfView = bikeControls != null && bikeControls.IsBoosting() ? CurrentBoostFOV : CurrentNormalFOV;
+    }
+
     void Start()
     {
         if (targetCamera == null) targetCamera = GetComponent<Camera>();
         if (targetCamera != null)
         {
-            targetCamera.fieldOfView = normalFOV;
+            targetCamera.fieldOfView = CurrentNormalFOV;
             _initialLocalPos = targetCamera.transform.localPosition;
             _initialLocalRotation = targetCamera.transform.localRotation;
         }
@@ -46,11 +67,11 @@ public class BikeCameraEffect : MonoBehaviour
     {
         if (bikeControls.IsBoosting())
         {
-            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, boostFOV, transitionSpeed * Time.deltaTime);
+            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, CurrentBoostFOV, transitionSpeed * Time.deltaTime);
         }
         else
         {
-            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, normalFOV, returnSpeed * Time.deltaTime);
+            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, CurrentNormalFOV, returnSpeed * Time.deltaTime);
         }
         
     }
@@ -69,6 +90,6 @@ public class BikeCameraEffect : MonoBehaviour
         _isCrashed = false;
         targetCamera.transform.localPosition = _initialLocalPos;
         targetCamera.transform.localRotation = _initialLocalRotation;
-        targetCamera.fieldOfView = normalFOV;
+        targetCamera.fieldOfView = CurrentNormalFOV;
     }
 }

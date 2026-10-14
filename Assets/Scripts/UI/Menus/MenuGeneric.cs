@@ -11,6 +11,8 @@ public class MenuOption
     public string optionName;
     public TextMeshProUGUI textElement;
     public UnityEvent onSelectAction;
+    [Tooltip("Optionnel : appelé avec -1 (gauche) ou +1 (droite), ex. pour modifier un réglage")]
+    public UnityEvent<int> onHorizontalAction;
 }
 
 public class MenuGeneric : MonoBehaviour
@@ -126,7 +128,18 @@ public class MenuGeneric : MonoBehaviour
         
         Vector2 move = context.ReadValue<Vector2>();
 
-        if (Mathf.Abs(move.y) > 0.5f)
+        // Gauche / droite : modifie la valeur de l'option sélectionnée si elle en a une
+        if (Mathf.Abs(move.x) > 0.5f && Mathf.Abs(move.x) > Mathf.Abs(move.y))
+        {
+            UnityEvent<int> horizontal = options[_currentIndex].onHorizontalAction;
+            if (horizontal == null || horizontal.GetPersistentEventCount() == 0) return;
+
+            AudioManager.Instance.PlaySFX(navigateSound, uiVolume);
+            horizontal.Invoke(move.x > 0 ? 1 : -1);
+
+            StartCoroutine(InputTick());
+        }
+        else if (Mathf.Abs(move.y) > 0.5f)
         {
             AudioManager.Instance.PlaySFX(navigateSound, uiVolume);
             

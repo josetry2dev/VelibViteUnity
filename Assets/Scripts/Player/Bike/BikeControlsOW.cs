@@ -354,7 +354,7 @@ public class BikeControlsOW : BikeControlsBase
     
     protected override void ApplyPhysicsMovement()
     {
-        turn = _steerInput * turnSpeed * Time.fixedDeltaTime;
+        turn = _steerInput * turnSpeed * GameSettings.SteerSensitivity * Time.fixedDeltaTime;
         
         _currentInstability = Mathf.Lerp(_currentInstability, _drunkPercentage * instabilityIntensity, Time.fixedDeltaTime * _drunkTransitionSpeed);
         if (currentSpeed > 0.5f && _currentInstability > 0.001f)

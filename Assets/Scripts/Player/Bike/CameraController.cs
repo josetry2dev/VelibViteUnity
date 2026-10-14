@@ -43,7 +43,10 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         _playerInput = FindAnyObjectByType<PlayerInput>();
-        _cameraTransform = FindAnyObjectByType<Camera>().transform;
+        // Caméra du joueur en priorité : FindAnyObjectByType peut tomber sur une autre caméra (ex : FlowCamera du HUD)
+        Camera cam = GetComponentInChildren<Camera>();
+        if (cam == null) cam = FindAnyObjectByType<Camera>();
+        _cameraTransform = cam.transform;
         _moveAction = _playerInput.actions["Move"];
         _lookAction = _playerInput.actions["Look"];
     }

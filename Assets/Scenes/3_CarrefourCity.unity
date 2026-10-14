@@ -1761,7 +1761,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -1813,7 +1813,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -3088,6 +3088,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9084299768095749242, guid: 941e4edefe0214f488309417b40368e3, type: 3}
   m_PrefabInstance: {fileID: 739951664}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &741661337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8302845324427284806, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+  m_PrefabInstance: {fileID: 7541158657200555822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &741661340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741661337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!4 &768359069 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8157877009504514080, guid: d7e90c39f8f86854f9b58e8c8bba3733, type: 3}
@@ -3676,6 +3710,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879544690}
   m_Mesh: {fileID: 8554850712792477175, guid: cf248e9b2cc070e46a711a270b440420, type: 3}
+--- !u!1 &922061782 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3025680339203951754, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+  m_PrefabInstance: {fileID: 7541158657200555822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &922061785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922061782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &956278318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3885,6 +3953,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9084299768095749242, guid: 941e4edefe0214f488309417b40368e3, type: 3}
   m_PrefabInstance: {fileID: 1126112697}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1093037616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 684102327458055081, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+  m_PrefabInstance: {fileID: 7541158657200555822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1093037619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093037616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!4 &1112730542 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2420367851631359151, guid: df76ea308ba7aa745a171f18a1ea87b0, type: 3}
@@ -4069,6 +4171,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 7.6925974, z: 0.5}
   m_Size: {x: 0.25, y: 34.24637, z: 1}
   m_FadeFactor: 0.152
+  m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
 --- !u!4 &1158142628
@@ -5752,6 +5855,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 53.237488, z: 0.5}
   m_Size: {x: 0.25, y: 125.336136, z: 1}
   m_FadeFactor: 0.152
+  m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
 --- !u!4 &1684222835
@@ -6901,6 +7005,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 43.13463, z: 0.5}
   m_Size: {x: 0.25, y: 105.13042, z: 1}
   m_FadeFactor: 0.152
+  m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
 --- !u!4 &1916348340
@@ -7953,7 +8058,7 @@ PrefabInstance:
     - target: {fileID: 1149338476854289576, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: LevelCompleteScreen
       value: 
-      objectReference: {fileID: 7541158657200555825}
+      objectReference: {fileID: 0}
     - target: {fileID: 1226916052563919425, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8010,6 +8115,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 3187787446090025466, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1627.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3187787446090025466, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199612087555580239, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1641.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3212884724211988923, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: levelInfos
       value: 
@@ -8054,6 +8171,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3543639911401273703, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3902606030477384413, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8074,6 +8195,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4279342318459853919, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1527.4482
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279342318459853919, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -64.28486
+      objectReference: {fileID: 0}
     - target: {fileID: 4746233271668133973, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8088,6 +8217,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4746233271668133973, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420273999123868841, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5676670647549819271, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
@@ -8146,6 +8279,10 @@ PrefabInstance:
       propertyPath: playerInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8048040315980341011, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8081636966450067793, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8165,7 +8302,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3025680339203951754, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 922061785}
+    - targetCorrespondingSourceObject: {fileID: 8302845324427284806, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 741661340}
+    - targetCorrespondingSourceObject: {fileID: 684102327458055081, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1093037619}
   m_SourcePrefab: {fileID: 100100000, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
 --- !u!114 &7541158657200555823 stripped
 MonoBehaviour:
@@ -8181,11 +8327,6 @@ MonoBehaviour:
 --- !u!1 &7541158657200555824 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4407779353168635049, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
-  m_PrefabInstance: {fileID: 7541158657200555822}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7541158657200555825 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1037038696945656614, guid: 30a759a3e84cba14b91454c318555b58, type: 3}
   m_PrefabInstance: {fileID: 7541158657200555822}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

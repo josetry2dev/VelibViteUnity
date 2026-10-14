@@ -29,6 +29,7 @@ public class LevelManager : MonoBehaviour
 
     [Header(" --- Pause & Game Over UI --- ")]
     public GameObject pausePanel;
+    public GameObject settingsPanel;
     public GameObject gameOverPanel;
     public TMP_Text gameOverText;
 
@@ -139,6 +140,7 @@ public class LevelManager : MonoBehaviour
         {
             Time.timeScale = 1f;
             pausePanel.SetActive(false);
+            if (settingsPanel != null) settingsPanel.SetActive(false);
             _gameState = GameState.Running;
         }
     }
