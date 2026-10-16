@@ -54,7 +54,7 @@ public class MusicManager : MonoBehaviour
         // Si on ne trouve pas de clip pour cette scène, on ne fait rien
         if (clipToPlay == null)
         {
-            Debug.LogWarning("Aucune musique définie pour la scène : " + sceneName);
+            // Debug.LogWarning("Aucune musique définie pour la scène : " + sceneName);
             audioSource.Stop();
             return;
         }
