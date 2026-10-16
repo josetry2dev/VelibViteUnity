@@ -58,11 +58,6 @@ public class StartMenu : MonoBehaviour
         SceneManager.LoadScene("Scenes/01_Expo");
     }
 
-    public void GoToStudio()
-    {
-        SceneManager.LoadScene("Scenes/02_Studio");
-    }
-
     public void QuitGame()
     {
         Application.Quit();
