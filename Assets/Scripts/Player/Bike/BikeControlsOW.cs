@@ -89,6 +89,7 @@ public class BikeControlsOW : BikeControlsBase
     // Bonk
     private float _impactTimer;
     private float _bonkCooldown;
+    public event System.Action Bonked;
     #endregion
     
     #region Awake Enable
@@ -419,6 +420,7 @@ public class BikeControlsOW : BikeControlsBase
         _rb.AddForce(impactForce, ForceMode.Impulse);
         
         RemoveBoost(0.1f);
+        Bonked?.Invoke();
     }
     
     public void StepUp()
@@ -494,6 +496,18 @@ public class BikeControlsOW : BikeControlsBase
     public override bool IsBoosting()
     {
         return isBoosting;
+    }
+    public float GetCurrentSpeed()
+    {
+        return currentSpeed;
+    }
+    public bool IsDrifting()
+    {
+        return isDrifting;
+    }
+    public bool IsBraking()
+    {
+        return isBraking && !isReversing;
     }
     public override bool IsGrounded()
     {

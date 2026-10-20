@@ -2,16 +2,35 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
+// Résolution des chocs du vélo : gros crash (perte de vie), bonk (recul) ou marche de trottoir
 public class PlayerCollision : MonoBehaviour
 {
+    private const string ObstacleTag = "Obstacle";
+    private const string CarTag = "Car";
+    private const string PietonTag = "Pieton";
+
     [Header(" --- References --- ")]
-    public BikeControlsBase bikeControls; 
+    public BikeControlsBase bikeControls;
     public BikeHealthSystem bikeHealthSystem;
 
     [Header(" --- Bonk Settings --- ")]
     public float recoilForce = 20f; // bonk force
 
+    [Header(" --- Crash Thresholds (vitesse UI du vélo) --- ")]
+    [Tooltip("Au-dessus, un obstacle ou une voiture = crash")]
+    public float obstacleCrashSpeed = 10f;
+    [Tooltip("Au-dessus, un piéton = crash")]
+    public float pietonCrashSpeed = 5f;
+    [Tooltip("Une voiture plus rapide que ça = crash, même si on roule doucement")]
+    public float carCrashSpeed = 5f;
+
     private bool _hasFinished;
+    private int _floorLayer;
+
+    void Awake()
+    {
+        _floorLayer = LayerMask.NameToLayer("Floor");
+    }
 
     public void SetFinished()
     {
@@ -21,72 +40,53 @@ public class PlayerCollision : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (_hasFinished) return;
-        
-        if (collision.gameObject.CompareTag("Obstacle")
-            || collision.gameObject.CompareTag("Car")
-            || collision.gameObject.CompareTag("Pieton"))
+
+        GameObject other = collision.gameObject;
+        bool isObstacle = other.CompareTag(ObstacleTag);
+        bool isCar = other.CompareTag(CarTag);
+        bool isPieton = other.CompareTag(PietonTag);
+        if (!isObstacle && !isCar && !isPieton) return;
+
+        Vector3 normal = collision.GetContact(0).normal;
+        bool isFloor = other.layer == _floorLayer;
+        if (isFloor && normal.y > 0.95f) return; // Atterrissage sur le sol après un saut
+
+        // --- CAS 1 : GROS CRASH ---
+        if (IsCrash(other, isObstacle, isCar))
         {
-            // --- CAS 1 : GROS CRASH ---
-            if (collision.gameObject.CompareTag("Obstacle")
-                && (bikeControls.GetSpeedForUI() > 10))
-            {
-                if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-                {
-                    Vector3 pushDir = collision.GetContact(0).normal;
-                    pushDir = pushDir.normalized;
-                    if (pushDir.y > 0.95f) // Si on atterit sur le sol apres un saut
-                    {
-                        return;
-                    }
-                }
-                Rumble(1f, 0.2f, 0.4f);
-                bikeHealthSystem.TakeDamage();
-                return;
-            }
-            else if (collision.gameObject.CompareTag("Car"))
-            {
-                var behavior = collision.gameObject.GetComponent<CarBehavior>();
-                if (behavior.GetSpeed() > 5 ||
-                    (bikeControls.GetSpeedForUI() > 10))
-                {
-                    Rumble(1f, 0.2f, 0.4f);
-                    bikeHealthSystem.TakeDamage();
-                    return;
-                }
-            }
-            else if (collision.gameObject.CompareTag("Pieton")
-                     && (bikeControls.GetSpeedForUI() > 5))
-            {
-                Rumble(1f, 0.2f, 0.4f);
-                bikeHealthSystem.TakeDamage();
-                return;
-            }
+            Rumble(1f, 0.2f, 0.4f);
+            bikeHealthSystem.TakeDamage();
+            return;
+        }
 
-            Rumble(0f, 0.8f, 0.1f);
+        // --- CAS 2 : BONK / TROTTOIR ---
+        Rumble(0f, 0.8f, 0.1f);
+        if (!(bikeControls is BikeControlsOW owScript)) return;
 
-            Vector3 pushDir2 = collision.GetContact(0).normal;
-
-            pushDir2.y = Mathf.Max(pushDir2.y, 0.5f);
-            pushDir2 = pushDir2.normalized;
-
-            if (bikeControls is BikeControlsOW owScript)
-            {
-                if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-                {
-                    if (pushDir2.y > 0.95f)
-                    {
-                        return;
-                    }
-                    owScript.StepUp(); // On monte un trottoir
-                }
-                else
-                {
-                    owScript.ApplyBonk(pushDir2 * recoilForce);
-                }
-            }
+        if (isFloor)
+        {
+            owScript.StepUp(); // On monte un trottoir
+        }
+        else
+        {
+            normal.y = Mathf.Max(normal.y, 0.5f);
+            owScript.ApplyBonk(normal.normalized * recoilForce);
         }
     }
-    
+
+    private bool IsCrash(GameObject other, bool isObstacle, bool isCar)
+    {
+        float bikeSpeed = bikeControls.GetSpeedForUI();
+        if (isObstacle) return bikeSpeed > obstacleCrashSpeed;
+        if (isCar)
+        {
+            var car = other.GetComponent<CarBehavior>();
+            return bikeSpeed > obstacleCrashSpeed || (car != null && car.GetSpeed() > carCrashSpeed);
+        }
+        return bikeSpeed > pietonCrashSpeed;
+    }
+
+    #region Rumble
     public void Rumble(float low, float high, float duration)
     {
         if (Gamepad.current != null)
@@ -110,4 +110,5 @@ public class PlayerCollision : MonoBehaviour
             Gamepad.current.SetMotorSpeeds(0f, 0f);
         }
     }
+    #endregion
 }

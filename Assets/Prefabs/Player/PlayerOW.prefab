@@ -603,6 +603,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7925883359378759005}
+    - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4029630074568960512}
+    - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1953118643276113781}
     - targetCorrespondingSourceObject: {fileID: 68240624782320393, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7772350307446438428}
@@ -910,16 +916,16 @@ MonoBehaviour:
   boostAcceleration: 30
   boostDeceleration: 7.5
   maxBoostDuration: 3
-  handsFree: 0
-  instabilityIntensity: 40
-  instabilitySpeed: 0.5
-  sonnetteAudio: {fileID: 0}
-  roueLibreAudio: {fileID: 8395991341193025575}
   jumpForce: 500
   groundCheckDistance: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  handsFree: 0
+  instabilityIntensity: 40
+  instabilitySpeed: 0.5
+  sonnetteAudio: {fileID: 0}
+  roueLibreAudio: {fileID: 8395991341193025575}
   currentSpeed: 0
   currentTierIndex: 0
   boostFuel: 0
@@ -965,17 +971,153 @@ MonoBehaviour:
   bikeControls: {fileID: 8781827907893602998}
   bikeHealthSystem: {fileID: 5363279656432108678}
   speedText: {fileID: 5793778681752547158}
-  boostBarImage: {fileID: 3005527686892923406}
   speedTierBars:
   - {fileID: 7681323149668108612}
   - {fileID: 1992893284649958769}
   - {fileID: 3425930012557200738}
   - {fileID: 8903286757365973742}
   - {fileID: 4875532041907263634}
+  boostBarImage: {fileID: 3005527686892923406}
   batteryBars:
   - {fileID: 2847647288546366887}
   - {fileID: 2239986726333779797}
   - {fileID: 9124665471772048472}
+--- !u!114 &4029630074568960512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3049670460848439540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce125b3d71a3e7241a6e7b2cdb81e561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuraManager
+  bikeControls: {fileID: 8781827907893602998}
+  rankDisplay: {fileID: 0}
+  auraFeed: {fileID: 0}
+  pointsPerRank: 100
+  startAura: 150
+  rankDownMargin: 10
+  decayPerRank:
+  - 0
+  - 2
+  - 4
+  - 7
+  - 10
+  speedSmoothTime: 2
+  speedAuraCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -15
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4
+      value: -5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.6
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8
+      value: 6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 12
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.5
+      value: 20
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2.5
+      value: 30
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minDriftSpeed: 4
+  minDriftAngle: 30
+  minDriftDuration: 0.3
+  driftBaseBonus: 10
+  driftBonusPerSecond: 15
+  driftBonusPerDegree: 0.15
+  maxDriftBonus: 100
+  brakePenaltyPerSecond: 20
+  minBrakePenaltySpeed: 2
+  minBrakeMessage: 3
+  bonkPenalty: 45
+  crashKeepInRank: 20
+  dodgeBaseBonus: 15
+  dodgeClosenessBonus: 20
+  aura: 0
+  rank: 0
+  smoothedSpeedRatio: 0
+  driftDuration: 0
+  driftAngle: 0
+--- !u!114 &1953118643276113781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3049670460848439540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e07357e8fd388f48a7aea0fa4b440c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NearMissDetector
+  bikeControls: {fileID: 8781827907893602998}
+  detectionRadius: 4
+  nearMissDistance: 1
+  agentLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerHeight: 0.31
+  minBikeSpeed: 5
+  minCarSpeed: 3
+  minPietonSpeed: 0.5
+  minAngle: 30
 --- !u!114 &3067106587332388635 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3793584251465723206, guid: 8abc53c69230a734086b5295040a00fc, type: 3}

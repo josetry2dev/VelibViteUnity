@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class CarBehavior : MonoBehaviour
+public class CarBehavior : MonoBehaviour, IMovingAgent
 {
     [Header(" --- Speed Settings --- ")]
     public float maxSpeed = 15f;
@@ -126,4 +126,6 @@ public class CarBehavior : MonoBehaviour
         }
         return 0;
     }
+
+    public Vector3 Velocity => transform.forward * GetSpeed();
 }

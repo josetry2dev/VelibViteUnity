@@ -3,7 +3,7 @@ using System.Collections; // Obligatoire pour les Coroutines
 
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
-public class PietonBehavior : MonoBehaviour
+public class PietonBehavior : MonoBehaviour, IMovingAgent
 {
     [Header(" --- Speed Settings --- ")]
     public float maxSpeed = 2f;
@@ -143,4 +143,6 @@ public class PietonBehavior : MonoBehaviour
     {
         transform.position += Vector3.up * 0.45f;
     }
+
+    public Vector3 Velocity => isTurningAround ? Vector3.zero : transform.forward * currentSpeed;
 }

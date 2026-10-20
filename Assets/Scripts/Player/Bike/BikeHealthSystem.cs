@@ -30,6 +30,8 @@ public class BikeHealthSystem : MonoBehaviour
     private Vector3 _lastSafePosition;
     private Quaternion _lastSafeRotation;
 
+    public event System.Action Crashed;
+
     void Awake()
     {
         _currentLives = startLives;
@@ -50,6 +52,7 @@ public class BikeHealthSystem : MonoBehaviour
     {
         if (_isInvincible || _isRespawning) return;
         _currentLives--;
+        Crashed?.Invoke();
         if (bikeCameraEffect != null) bikeCameraEffect.TriggerCrashEffect();
         if (bikeControls != null) bikeControls.enabled = false;
         if (cameraController != null) cameraController.enabled = false;
