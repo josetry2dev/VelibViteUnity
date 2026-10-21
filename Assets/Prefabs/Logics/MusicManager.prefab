@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   musicTracks:
   - sceneName: 1_Menu
-    musicClip: {fileID: 8300000, guid: 80aec998b079ce94b854c1687b1065a9, type: 3}
+    musicClip: {fileID: 0}
   - sceneName: 2_Tuto
     musicClip: {fileID: 8300000, guid: 4a9d2b05ba97f3c40b78600c4555766d, type: 3}
   - sceneName: 3_CarrefourCity
