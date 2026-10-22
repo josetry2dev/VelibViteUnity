@@ -609,6 +609,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1953118643276113781}
+    - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1452748036474699106}
     - targetCorrespondingSourceObject: {fileID: 68240624782320393, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7772350307446438428}
@@ -724,6 +727,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!137 &1612794894406208730 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 600321935908341383, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1893054524610800855 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 319881985366107786, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -870,6 +878,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!4 &2950747800842688906 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3946877902106792919, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3005527686892923406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3999423476376985683, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -932,6 +945,7 @@ MonoBehaviour:
   isBoosting: 0
   isBraking: 0
   isDrifting: 0
+  isGivingFinger: 0
   isReversing: 0
   isBroken: 0
   isGrounded: 1
@@ -1118,6 +1132,59 @@ MonoBehaviour:
   minCarSpeed: 3
   minPietonSpeed: 0.5
   minAngle: 30
+--- !u!114 &1452748036474699106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3049670460848439540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc05ea5a27a04e94ca3c7e24b803eba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiddleFingerGesture
+  cameraTransform: {fileID: 8318991237812927554}
+  leftArmature: {fileID: 5625177719771935720}
+  leftHandBone: {fileID: 2950747800842688906}
+  leftHandRenderer: {fileID: 1612794894406208730}
+  handOffset: {x: -0.24, y: -0.12, z: 0.45}
+  handEulerOffset: {x: 22, y: 10, z: -22}
+  wristTargetEuler: {x: 0, y: 0, z: 0}
+  hiddenWhenIdle: 0
+  hiddenDropOffset: {x: 0, y: -0.5, z: -0.1}
+  raiseSpeed: 7
+  lowerSpeed: 5
+  fingerPoses:
+  - boneName: Bone.009
+    targetEuler: {x: -5, y: 0, z: 0}
+  - boneName: Bone.010
+    targetEuler: {x: -3, y: 0, z: 0}
+  - boneName: Bone.011
+    targetEuler: {x: -3, y: 0, z: 0}
+  - boneName: Bone.012
+    targetEuler: {x: -85, y: 8, z: 8}
+  - boneName: Bone.013
+    targetEuler: {x: -95, y: 0, z: 0}
+  - boneName: Bone.014
+    targetEuler: {x: -70, y: 0, z: 0}
+  - boneName: Bone.006
+    targetEuler: {x: -85, y: 0, z: 0}
+  - boneName: Bone.007
+    targetEuler: {x: -95, y: 0, z: 0}
+  - boneName: Bone.008
+    targetEuler: {x: -70, y: 0, z: 0}
+  - boneName: Bone.003
+    targetEuler: {x: -85, y: 0, z: -8}
+  - boneName: Bone.004
+    targetEuler: {x: -95, y: 0, z: 0}
+  - boneName: Bone.005
+    targetEuler: {x: -70, y: 0, z: 0}
+  - boneName: Bone.015
+    targetEuler: {x: -33, y: -79, z: 55}
+  - boneName: Bone.016
+    targetEuler: {x: -27, y: 21, z: -60}
+  forceGesture: 0
 --- !u!114 &3067106587332388635 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3793584251465723206, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -1366,6 +1433,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4501462ff30e31a4e92fbb47686fe4a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BikeHealthSystem
+--- !u!4 &5625177719771935720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5775211912403286453, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5793778681752547158 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5643761249289446667, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -1393,6 +1465,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!4 &8318991237812927554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7874534618034697759, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8903286757365973742 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7330696728563763379, guid: 8abc53c69230a734086b5295040a00fc, type: 3}

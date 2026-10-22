@@ -63,6 +63,7 @@ public class BikeControlsOW : BikeControlsBase
     [SerializeField] private bool isBoosting;
     [SerializeField] private bool isBraking;
     [SerializeField] private bool isDrifting;
+    [SerializeField] private bool isGivingFinger;
     [SerializeField] private bool isReversing;
     [SerializeField] private bool isBroken;
     [SerializeField] private bool isGrounded = true;
@@ -75,6 +76,7 @@ public class BikeControlsOW : BikeControlsBase
     private InputAction _boostAction;
     private InputAction _jumpAction;
     private InputAction _sonnetteAction;
+    private InputAction _doigtAction;
 
     // Internal State
     private const int MaxTiers = 5;
@@ -103,6 +105,7 @@ public class BikeControlsOW : BikeControlsBase
         _boostAction = _playerInput.actions["Boost"];
         _jumpAction = _playerInput.actions["BikeJump"];
         _sonnetteAction = _playerInput.actions["Sonnette"];
+        _doigtAction = _playerInput.actions["DoigtHonneur"];
 
         roueLibreAudio.volume = 0.2f;
     }
@@ -156,7 +159,7 @@ public class BikeControlsOW : BikeControlsBase
         // LE COEUR DE LA MARCHE ARRIERE
         // Si on appuie sur le frein ALORS qu'on est quasi à l'arrêt, on autorise la marche arrière.
         // Mathf.Abs(_currentSpeed) < 1f : Tolérance de 1 unité pour dire "à l'arrêt"
-        if (isGrounded && currentSpeed < 1f)
+        if (isGrounded && currentSpeed < 1f && !isGivingFinger)
         {
             isReversing = true;
         }
@@ -189,9 +192,11 @@ public class BikeControlsOW : BikeControlsBase
     protected override void ReadContinuousInputs()
     {
         base.ReadContinuousInputs();
-        isBraking = _brakeAction.IsPressed();
+        isGivingFinger = _doigtAction.IsPressed();
+        // Main gauche levée pour le doigt d'honneur : plus de main sur le frein (le drift reste dispo)
+        isBraking = _brakeAction.IsPressed() && !isGivingFinger;
         isDrifting = _driftAction.IsPressed(); 
-        if (isDrifting) isReversing = false; 
+        if (isDrifting || isGivingFinger) isReversing = false; 
     }
     
     #endregion
