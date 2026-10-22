@@ -50,6 +50,11 @@ public class FpsPlayerController : MonoBehaviour
     [Header(" --- Input --- ")]
     [SerializeField, Min(0f)] private float longPressThreshold = 0.45f;
 
+    [Header(" --- Drunk --- ")]
+    [Tooltip("Déviation max (degrés) de la marche à 100% bourré")]
+    [SerializeField, Min(0f)] private float drunkWalkDeviation = 35f;
+    [SerializeField, Min(0f)] private float drunkWalkNoiseSpeed = 0.5f;
+
     public Posture CurrentPosture { get; private set; } = Posture.Standing;
     public bool IsSprinting => _isSprinting;
     public bool IsGrounded => _controller != null && _controller.isGrounded;
@@ -73,6 +78,10 @@ public class FpsPlayerController : MonoBehaviour
     private bool _longPosturePressHandled;
 
     private readonly Collider[] _overlapBuffer = new Collider[32];
+
+    private float _drunkPercentage;
+    private float _drunkTransitionSpeed;
+    private float _currentDrunk;
 
     private void Awake()
     {
@@ -201,6 +210,11 @@ public class FpsPlayerController : MonoBehaviour
 
         desiredDirection = Vector3.ClampMagnitude(desiredDirection, 1f);
 
+        // Bourré : on n'arrive plus à marcher droit
+        _currentDrunk = Mathf.Lerp(_currentDrunk, _drunkPercentage, Time.deltaTime * _drunkTransitionSpeed);
+        float deviation = (Mathf.PerlinNoise(Time.time * drunkWalkNoiseSpeed, 0f) * 2f - 1f) * drunkWalkDeviation * _currentDrunk;
+        desiredDirection = Quaternion.AngleAxis(deviation, Vector3.up) * desiredDirection;
+
         float speed = GetCurrentSpeed();
         Vector3 targetVelocity = desiredDirection * speed * inputMagnitude;
 
@@ -229,6 +243,12 @@ public class FpsPlayerController : MonoBehaviour
             _horizontalVelocity + Vector3.up * _verticalVelocity;
 
         _controller.Move(finalVelocity * Time.deltaTime);
+    }
+
+    public void ApplyDrunk(float drunkPercentage, float drunkTransitionSpeed)
+    {
+        _drunkPercentage = drunkPercentage;
+        _drunkTransitionSpeed = drunkTransitionSpeed;
     }
 
     private float GetCurrentSpeed()

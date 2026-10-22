@@ -100,6 +100,8 @@ MonoBehaviour:
   volume: {fileID: 5726199466589120708}
   cameraController: {fileID: 9191345146731229716}
   bikeControls: {fileID: 8781827907893602998}
+  fpsCameraController: {fileID: 0}
+  fpsPlayerController: {fileID: 0}
   transitionSpeed: 0.25
   resetDrunkTime: 120
   drunkLensDistortionAmplitude: 0.2
@@ -612,6 +614,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1452748036474699106}
+    - targetCorrespondingSourceObject: {fileID: 3776148267655219881, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4597987142969895838}
     - targetCorrespondingSourceObject: {fileID: 68240624782320393, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7772350307446438428}
@@ -625,6 +630,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8055021481884851116}
   m_SourcePrefab: {fileID: 100100000, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+--- !u!137 &853707032134034483 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1580187265732079214, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1234560800720494663 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1087341641322555930, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -1185,6 +1195,40 @@ MonoBehaviour:
   - boneName: Bone.016
     targetEuler: {x: -27, y: 21, z: -60}
   forceGesture: 0
+--- !u!114 &4597987142969895838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3049670460848439540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89695d23675933d419235eb3913cc183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrinkGesture
+  cameraTransform: {fileID: 8318991237812927554}
+  rightArmature: {fileID: 3663968927179647604}
+  rightHandBone: {fileID: 7425119187862202969}
+  rightHandRenderer: {fileID: 853707032134034483}
+  bottlePrefab: {fileID: 2914350482642945877, guid: f13cea1409e758744a57c737d5bee63f, type: 3}
+  bikeControls: {fileID: 8781827907893602998}
+  drunkManager: {fileID: 8845278106176285493}
+  bottleScale: 0.11
+  gripOffset: {x: 0, y: 0, z: 0}
+  gripEuler: {x: 0, y: 0, z: -150}
+  holdPosition: {x: 0.16, y: -0.14, z: 0.42}
+  holdEuler: {x: -10, y: 0, z: 10}
+  mouthPosition: {x: 0.11, y: -0.06, z: 0.21}
+  mouthEuler: {x: -112, y: 0, z: 30}
+  sipAmplitude: 4
+  sipFrequency: 7
+  hiddenWhenIdle: 0
+  hiddenDropOffset: {x: 0, y: -0.5, z: -0.1}
+  drunkPerSecond: 0.15
+  raiseSpeed: 2.5
+  lowerSpeed: 3
+  forceGesture: 0
 --- !u!114 &3067106587332388635 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3793584251465723206, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -1309,6 +1353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!4 &3663968927179647604 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3236964037141520425, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4412551286864049962 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2524691949524172151, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
@@ -1452,6 +1501,11 @@ MonoBehaviour:
 --- !u!4 &7186591753552709676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9047431382914466417, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
+  m_PrefabInstance: {fileID: 2176656955191609949}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7425119187862202969 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8736520899498532868, guid: 8abc53c69230a734086b5295040a00fc, type: 3}
   m_PrefabInstance: {fileID: 2176656955191609949}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7681323149668108612 stripped

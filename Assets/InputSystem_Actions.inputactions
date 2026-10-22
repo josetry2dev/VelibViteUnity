@@ -185,6 +185,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Boire",
+                    "type": "Button",
+                    "id": "8d69420b-c722-4edd-ac9b-c0b0cc42fd53",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -669,6 +679,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "DoigtHonneur",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc7e680b-8392-43f5-a5fe-41aafcf41e61",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Boire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f7e807f-6ba4-4fd5-baad-68a1893f0616",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Boire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

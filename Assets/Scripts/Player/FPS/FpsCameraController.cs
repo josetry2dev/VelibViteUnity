@@ -11,7 +11,15 @@ public class FpsCameraController : MonoBehaviour
     [SerializeField] private float minPitch = -85f;
     [SerializeField] private float maxPitch = 85f;
 
+    [Header(" --- Drunk Sway (degrés à 100% bourré) --- ")]
+    [SerializeField] private float drunkYawSway = 6f;
+    [SerializeField] private float drunkPitchSway = 3f;
+    [SerializeField] private float drunkRollSway = 5f;
+
     private float _pitch;
+    private float _drunkPercentage;
+    private float _drunkTransitionSpeed;
+    private float _currentDrunk;
 
     private void Awake()
     {
@@ -37,6 +45,18 @@ public class FpsCameraController : MonoBehaviour
         _pitch -= mouseY;
         _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
 
-        transform.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
+        // Tangage d'ivrogne
+        _currentDrunk = Mathf.Lerp(_currentDrunk, _drunkPercentage, Time.deltaTime * _drunkTransitionSpeed);
+        float yawSway = Mathf.Sin(Time.time * 0.9f) * drunkYawSway * _currentDrunk;
+        float pitchSway = Mathf.Sin(Time.time * 0.6f + 1f) * drunkPitchSway * _currentDrunk;
+        float rollSway = Mathf.Sin(Time.time * 0.75f + 2f) * drunkRollSway * _currentDrunk;
+
+        transform.localRotation = Quaternion.Euler(_pitch + pitchSway, yawSway, rollSway);
+    }
+
+    public void ApplyDrunk(float drunkPercentage, float drunkTransitionSpeed)
+    {
+        _drunkPercentage = drunkPercentage;
+        _drunkTransitionSpeed = drunkTransitionSpeed;
     }
 }

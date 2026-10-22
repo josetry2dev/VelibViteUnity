@@ -242,7 +242,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -529,7 +529,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -666,7 +666,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -967,7 +967,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb26c252d1522d4db669b22569dc778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  cameraPrefab: {fileID: 5374677348607498611, guid: 831b42e650bf2ae46bc8f45043390e8e, type: 3}
+  cameraPrefab: {fileID: 5615259685408902613, guid: a000763f64eeeb4428ef08f5700ecf4e, type: 3}
   bikePositions:
   - {fileID: 3894202830252058223}
   - {fileID: 5979484336804592828}
@@ -1058,7 +1058,10 @@ MonoBehaviour:
   shakeIntensity: 0.1
   spawnPosition: {fileID: 1796984370781975273}
   playerPrefab: {fileID: 3049670460848439540, guid: 88126a6b7e51ce34ab564db16f6c4471, type: 3}
+  spawnPlayerPrefab: 1
   playerInput: {fileID: 0}
+  probVeloPourri: 0.9
+  messageTime: 2
   panelSelection: {fileID: 9113634969432107157}
   errorText: {fileID: 3977632044553506634}
   selectBikeButton: {fileID: 6578739599702102399}
@@ -1076,8 +1079,6 @@ MonoBehaviour:
   - c partiiii
   - tention les filles jpasse en mode enflure
   - missil en approche
-  probVeloPourri: 0.9
-  messageTime: 2
 --- !u!65 &4950711766551031246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1111,11 +1112,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae826fd9f0000d44a831c84eff8f113b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  stationManager: {fileID: 2855069211553382475}
+  playerInput: {fileID: 0}
+  activeCamera: {fileID: 0}
   enterStationPanel: {fileID: 8748908546615274838}
   fpsPlayerPrefab: {fileID: 8053187155024901212, guid: 7d99914b762889f4abc5e26947444de8, type: 3}
-  playerInput: {fileID: 0}
-  stationManager: {fileID: 2855069211553382475}
-  activeCamera: {fileID: 0}
 --- !u!1 &5037010176288684274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,7 +1307,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1386,6 +1387,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1675,7 +1677,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656bu
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
