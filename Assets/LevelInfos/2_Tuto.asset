@@ -26,7 +26,7 @@ MonoBehaviour:
     time: 32.1
   - playerName: boss!
     time: 42.5
-  - playerName: Macron
+  - playerName: macron
     time: 49.3
   - playerName: coca0
     time: 84.9
@@ -34,3 +34,11 @@ MonoBehaviour:
     time: 65.7
   - playerName: andre
     time: 107.7
+  - playerName: gen!z
+    time: 67.67
+  - playerName: o2la!
+    time: 54.2
+  - playerName: v2!!!
+    time: 17.1
+  - playerName: meluch
+    time: 20.27
