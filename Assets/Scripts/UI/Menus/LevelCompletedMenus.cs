@@ -123,8 +123,17 @@ public class LevelCompletedMenus : MonoBehaviour
     
     public void SetLevelCompletedPanel2()
     {
-        levelNameTxt.text = _levelInfos.levelName;
-    
+        levelNameTxt.text = StripLevelPrefix(_levelInfos.levelName);
+        // Auto-size pour que les noms longs (ex: CarrefourCity) ne débordent pas sur le top 10
+        levelNameTxt.textWrappingMode = TextWrappingModes.NoWrap;
+        levelNameTxt.overflowMode = TextOverflowModes.Overflow;
+        if (!levelNameTxt.enableAutoSizing)
+        {
+            levelNameTxt.fontSizeMax = levelNameTxt.fontSize;
+            levelNameTxt.fontSizeMin = Mathf.Min(10f, levelNameTxt.fontSize);
+            levelNameTxt.enableAutoSizing = true;
+        }
+
         List<ScoreEntry> scores = scoreManager.GetTop10();
         int highlightIndex = scoreManager.GetLastAddedIndex();
 
@@ -173,6 +182,14 @@ public class LevelCompletedMenus : MonoBehaviour
         Time.timeScale = 0f;
     }
     
+    // "3_CarrefourCity" -> "CarrefourCity"
+    private static string StripLevelPrefix(string levelName)
+    {
+        if (string.IsNullOrEmpty(levelName)) return levelName;
+        int underscore = levelName.IndexOf('_');
+        return underscore >= 0 ? levelName.Substring(underscore + 1) : levelName;
+    }
+
     private static void MarkLevelAsUnlocked(string levelID)
     {
         PlayerPrefs.SetInt("Unlocked_" + levelID, 1);

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6164ab62a4ed09b4fa9306907780df8e, type: 3}
+  m_Name: Studio
+  m_EditorClassIdentifier: Assembly-CSharp::SmsDialogue
+  messages:
+  - senderName: jose
+    content: Frero jss devant chez oit
+    isPlayer: 1
+    tempo: 0.5
+    timeOut: 0
+    onTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  - senderName: jose
+    content: c quoi le code deja
+    isPlayer: 1
+    tempo: 2
+    timeOut: 0
+    onTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  - senderName: yung_coust
+    content: "encul\xE9 jdormais"
+    isPlayer: 0
+    tempo: 1.5
+    timeOut: 0
+    onTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  - senderName: yung_coust
+    content: c 76b34
+    isPlayer: 0
+    tempo: 1.5
+    timeOut: 0
+    onTimeout:
+      m_PersistentCalls:
+        m_Calls: []
+  - senderName: jose
+    content: cimer enfile un calbar jrv
+    isPlayer: 1
+    tempo: 1.5
+    timeOut: 0
+    onTimeout:
+      m_PersistentCalls:
+        m_Calls: []

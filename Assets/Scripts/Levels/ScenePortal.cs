@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -23,11 +24,30 @@ public class ScenePortal : MonoBehaviour
     [Header(" --- UI --- ")]
     public GameObject promptPanel;
 
+    [Header(" --- Dialogue d'entrée (optionnel) --- ")]
+    [Tooltip("Dialogue SMS joué avant d'entrer, une seule fois jusqu'au prochain retour au menu")]
+    public SmsDialogue entryDialogue;
+    public SmsManager smsManager;
+
     // Portail sur lequel faire apparaître le joueur au prochain chargement de scène
     private static string _pendingArrivalId;
+    // Portails dont le dialogue d'entrée a déjà été joué depuis le dernier passage au menu
+    private static readonly HashSet<string> _playedEntryDialogues = new HashSet<string>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() => _pendingArrivalId = null;
+    private static void ResetStatics()
+    {
+        _pendingArrivalId = null;
+        _playedEntryDialogues.Clear();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Retour au menu (build index 0) : les dialogues d'entrée peuvent se rejouer
+        if (scene.buildIndex == 0) _playedEntryDialogues.Clear();
+    }
 
     private InputAction _interactAction;
     private bool _isPlayerInZone;
@@ -50,7 +70,7 @@ public class ScenePortal : MonoBehaviour
     private void Update()
     {
         if (!_isPlayerInZone || _isLoading || _interactAction == null) return;
-        if (_interactAction.WasPressedThisFrame()) LoadTarget();
+        if (_interactAction.WasPressedThisFrame()) TryEnter();
     }
 
     public void OnTriggerEnter(Collider other)
@@ -58,7 +78,7 @@ public class ScenePortal : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         _isPlayerInZone = true;
         _interactAction?.Enable();
-        if (promptPanel) promptPanel.SetActive(true);
+        if (promptPanel && !_isLoading) promptPanel.SetActive(true);
     }
 
     public void OnTriggerExit(Collider other)
@@ -68,11 +88,42 @@ public class ScenePortal : MonoBehaviour
         if (promptPanel) promptPanel.SetActive(false);
     }
 
+    private void TryEnter()
+    {
+        if (entryDialogue == null || _playedEntryDialogues.Contains(portalId))
+        {
+            LoadTarget();
+            return;
+        }
+
+        // Le SmsManager est sur le SMSPanel, désactivé tant qu'aucun dialogue ne tourne
+        if (smsManager == null) smsManager = FindAnyObjectByType<SmsManager>(FindObjectsInactive.Include);
+        if (smsManager == null)
+        {
+            Debug.LogWarning($"ScenePortal '{portalId}' : aucun SmsManager trouvé, on entre sans dialogue.", this);
+            LoadTarget();
+            return;
+        }
+
+        _isLoading = true;
+        _playedEntryDialogues.Add(portalId);
+        if (promptPanel) promptPanel.SetActive(false);
+        SetPlayerMovementLocked(true);
+        // Pas besoin de déverrouiller : la scène change à la fin du dialogue
+        smsManager.StartDialogue(entryDialogue, LoadTarget);
+    }
+
     private void LoadTarget()
     {
         _isLoading = true;
         _pendingArrivalId = targetPortalId;
         SceneManager.LoadScene(targetScene);
+    }
+
+    private static void SetPlayerMovementLocked(bool locked)
+    {
+        var fpsController = FindAnyObjectByType<FpsPlayerController>();
+        if (fpsController) fpsController.MovementLocked = locked;
     }
 
     private void PlacePlayerAtArrival()

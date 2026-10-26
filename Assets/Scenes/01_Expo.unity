@@ -13654,6 +13654,10 @@ PrefabInstance:
       value: 02_Studio
       objectReference: {fileID: 0}
     - target: {fileID: 7235708688562842514, guid: 1b3f1a00ffe6cb44e9f15ea493e4901e, type: 3}
+      propertyPath: entryDialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 006c312950d818d4db0da5c6b88067c9, type: 2}
+    - target: {fileID: 7235708688562842514, guid: 1b3f1a00ffe6cb44e9f15ea493e4901e, type: 3}
       propertyPath: targetPortalId
       value: SortieStudio
       objectReference: {fileID: 0}

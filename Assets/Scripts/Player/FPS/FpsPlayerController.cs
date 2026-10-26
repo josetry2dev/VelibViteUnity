@@ -58,6 +58,8 @@ public class FpsPlayerController : MonoBehaviour
     public Posture CurrentPosture { get; private set; } = Posture.Standing;
     public bool IsSprinting => _isSprinting;
     public bool IsGrounded => _controller != null && _controller.isGrounded;
+    // Bloque déplacement, saut, sprint et posture (ex : pendant un dialogue). La gravité reste active.
+    public bool MovementLocked { get; set; }
 
     private PlayerInput _playerInput;
 
@@ -128,9 +130,12 @@ public class FpsPlayerController : MonoBehaviour
         if (_playerInput == null)
             return;
 
-        HandleJumpInput();
-        HandleSprintInput();
-        HandlePostureInput();
+        if (!MovementLocked)
+        {
+            HandleJumpInput();
+            HandleSprintInput();
+            HandlePostureInput();
+        }
 
         UpdateSprint();
         UpdatePostureTransition();
@@ -183,7 +188,7 @@ public class FpsPlayerController : MonoBehaviour
 
     private void UpdateSprint()
     {
-        Vector2 input = _moveAction.ReadValue<Vector2>();
+        Vector2 input = ReadMoveInput();
 
         // Returning the stick to its center cancels sprint.
         if (input.magnitude < movementDeadzone)
@@ -199,9 +204,11 @@ public class FpsPlayerController : MonoBehaviour
         }
     }
 
+    private Vector2 ReadMoveInput() => MovementLocked ? Vector2.zero : _moveAction.ReadValue<Vector2>();
+
     private void UpdateMovement()
     {
-        Vector2 input = _moveAction.ReadValue<Vector2>();
+        Vector2 input = ReadMoveInput();
         float inputMagnitude = Mathf.Clamp01(input.magnitude);
 
         Vector3 desiredDirection =
