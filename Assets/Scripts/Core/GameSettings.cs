@@ -11,7 +11,7 @@ public static class GameSettings
     public const float SteerSensitivityStep = 0.1f;
 
     // --- FOV caméra vélo (valeur de normalFOV sur PlayerOW) ---
-    public const float DefaultFov = 60f;
+    public const float DefaultFov = 65f;
     public const float MinFov = 50f;
     public const float MaxFov = 90f;
     public const float FovStep = 5f;
@@ -21,6 +21,10 @@ public static class GameSettings
 
     public static event Action Changed;
 
+    // Menu Réglages désactivé (sensi/FOV touchent trop au gameplay) : on force les valeurs par défaut
+    // et on ignore ce qui a pu être sauvegardé avant. Repasser à true pour le réactiver.
+    public const bool PlayerSettingsEnabled = false;
+
     private static float? _steerSensitivity;
     private static float? _fov;
 
@@ -28,6 +32,7 @@ public static class GameSettings
     {
         get
         {
+            if (!PlayerSettingsEnabled) return DefaultSteerSensitivity;
             _steerSensitivity ??= PlayerPrefs.GetFloat(SteerKey, DefaultSteerSensitivity);
             return _steerSensitivity.Value;
         }
@@ -45,6 +50,7 @@ public static class GameSettings
     {
         get
         {
+            if (!PlayerSettingsEnabled) return DefaultFov;
             _fov ??= PlayerPrefs.GetFloat(FovKey, DefaultFov);
             return _fov.Value;
         }

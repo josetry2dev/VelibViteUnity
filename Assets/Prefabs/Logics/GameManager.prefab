@@ -4495,26 +4495,6 @@ MonoBehaviour:
     onHorizontalAction:
       m_PersistentCalls:
         m_Calls: []
-  - optionName: Reglages
-    textElement: {fileID: 3924971344459607724}
-    onSelectAction:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3785041822811955981}
-          m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
-          m_MethodName: Open
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onHorizontalAction:
-      m_PersistentCalls:
-        m_Calls: []
   - optionName: Quit
     textElement: {fileID: 5373772577814559581}
     onSelectAction:
@@ -10018,7 +9998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1290725257044581507
 RectTransform:
   m_ObjectHideFlags: 0
