@@ -22,6 +22,8 @@ partial class OsmImporter
         public bool AutoHabillage = true;
         public float ShopChance = 0.45f, GraffChance = 0.35f;
         public int Seed = 1;
+        // Plots et rambardes au bord du trottoir : part de la bordure équipée, et part de rambardes parmi les équipements
+        public float FurnitureDensity = 0.35f, RailingShare = 0.5f;
     }
 
     static void BlockSettingsGUI(BlockSettings s)
@@ -34,6 +36,7 @@ partial class OsmImporter
         s.MinSidewalk = Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Trottoir min (m)", "Garanti même si la route OSM mord sur le bâtiment"), s.MinSidewalk), 0.3f, s.MaxSidewalk);
         s.CurbHeight = Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Hauteur bordure (m)", "Le vélo monte une marche de 0,2 m"), s.CurbHeight), 0.05f, 0.4f);
         s.RandomRamps = EditorGUILayout.Toggle(new GUIContent("Bateaux aléatoires", "En plus de ceux des passages piétons"), s.RandomRamps);
+        FurnitureGUI(s);
         s.Facades = EditorGUILayout.Toggle("Façades Generic", s.Facades);
         using (new EditorGUI.DisabledScope(!s.Facades))
         {
@@ -47,6 +50,13 @@ partial class OsmImporter
         }
         s.Seed = EditorGUILayout.IntField(new GUIContent("Seed", "Même seed = même ville"), s.Seed);
         EditorGUI.indentLevel--;
+    }
+
+    static void FurnitureGUI(BlockSettings s)
+    {
+        s.FurnitureDensity = EditorGUILayout.Slider(new GUIContent("Plots et rambardes", "Part de la bordure équipée (0 = aucun)"), s.FurnitureDensity, 0f, 1f);
+        using (new EditorGUI.DisabledScope(s.FurnitureDensity <= 0f))
+            s.RailingShare = EditorGUILayout.Slider(new GUIContent("Part de rambardes", "0 = que des plots, 1 = que des rambardes"), s.RailingShare, 0f, 1f);
     }
 
     class RoadSurface
@@ -150,6 +160,7 @@ partial class OsmImporter
                 // Comme les trottoirs de CarrefourCity : marche (StepUp) à basse vitesse, crash au-delà
                 walk.tag = ObstacleTag;
                 walk.layer = LayerMask.NameToLayer("Floor");
+                PlaceFurniture(go.transform, sidewalk, ramps, footprint, top, Blocks, random);
 
                 bool dressed = facades.Count > 0 && PlaceFacades(go.transform, footprint, p => HeightAt(block, p + block.Pivot), facades, top, Blocks, random, shops, graffs);
                 if (dressed)
@@ -644,6 +655,95 @@ partial class OsmImporter
                 sb.Tri(0, V(a, top), V(b, top), V(c, top), a * 0.5f, b * 0.5f, c * 0.5f, Vector3.up);
             }
             return sb.ToMesh(name);
+        }
+
+        // --- Mobilier ---
+
+        const string PlotPath = "Assets/Prefabs/FBX_Blender/Plot.prefab", RailingPath = "Assets/Prefabs/FBX_Blender/Rembarde.prefab";
+        // Distance au bord de la bordure, écart entre plots et entre rambardes
+        const float FurnitureInset = 0.5f, PlotSpacing = 1.5f, RailingGap = 0.1f;
+        // Il faut au moins cette distance jusqu'à la façade (les shops dépassent de ~0,9 m)
+        const float FurnitureClearance = 1.4f;
+
+        // Longueur d'un prefab le long de son axe X une fois posé avec sa rotation et son échelle d'origine
+        static float LengthAlongX(GameObject prefab)
+        {
+            var mesh = prefab.GetComponentInChildren<MeshFilter>().sharedMesh;
+            var matrix = Matrix4x4.TRS(Vector3.zero, prefab.transform.localRotation, prefab.transform.localScale);
+            var b = mesh.bounds;
+            float min = float.MaxValue, max = float.MinValue;
+            for (int i = 0; i < 8; i++)
+            {
+                float x = matrix.MultiplyPoint3x4(b.center + Vector3.Scale(b.extents, new Vector3((i & 1) * 2 - 1, (i & 2) - 1, (i & 4) / 2 - 1))).x;
+                min = Mathf.Min(min, x);
+                max = Mathf.Max(max, x);
+            }
+            return max - min;
+        }
+
+        // Séries de plots ou de rambardes le long du bord du trottoir, jamais devant un bateau ni dans les angles arrondis
+        static void PlaceFurniture(Transform blockRoot, List<Vector2> outer, List<(int edge, float along)> ramps, List<Vector2> footprint,
+            float top, BlockSettings settings, System.Random random)
+        {
+            if (settings.FurnitureDensity <= 0f)
+                return;
+            var plot = AssetDatabase.LoadAssetAtPath<GameObject>(PlotPath);
+            var railing = AssetDatabase.LoadAssetAtPath<GameObject>(RailingPath);
+            if (plot == null && railing == null)
+                return;
+            float railingLength = railing != null ? LengthAlongX(railing) : 0f;
+            var parent = Child(blockRoot, "Mobilier").transform;
+            float rampClear = RampWidth / 2 + RampTransition + 0.3f;
+
+            for (int i = 0; i < outer.Count; i++)
+            {
+                Vector2 a = outer[i], b = outer[(i + 1) % outer.Count];
+                float length = (b - a).magnitude;
+                // Les petits côtés sont les arcs des angles
+                if (length < 3f)
+                    continue;
+                var dir = (b - a) / length;
+                var inward = new Vector2(-dir.y, dir.x);
+                var forbidden = ramps.Where(r => r.edge == i).Select(r => (r.along - rampClear, r.along + rampClear)).ToList();
+                bool Free(float from, float to) => from >= 0.8f && to <= length - 0.8f && forbidden.All(f => to < f.Item1 || from > f.Item2);
+                var rotation = Quaternion.LookRotation(new Vector3(dir.x, 0f, dir.y)) * Quaternion.Euler(0f, -90f, 0f);
+
+                bool Place(GameObject prefab, float along)
+                {
+                    var p = a + dir * along + inward * FurnitureInset;
+                    if (DistanceToRing(p, footprint) < FurnitureClearance)
+                        return false;
+                    var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+                    go.transform.localPosition = V(p, top);
+                    go.transform.localRotation = rotation * prefab.transform.localRotation;
+                    return true;
+                }
+
+                float cursor = 0.8f;
+                while (cursor < length - 0.8f)
+                {
+                    if (random.NextDouble() >= settings.FurnitureDensity)
+                    {
+                        cursor += 3f + (float)random.NextDouble() * 5f;
+                        continue;
+                    }
+                    bool rails = railing != null && (plot == null || random.NextDouble() < settings.RailingShare);
+                    int count = random.Next(2, 6);
+                    float step = rails ? railingLength + RailingGap : PlotSpacing;
+                    float start = cursor;
+                    for (int k = 0; k < count; k++)
+                    {
+                        float from = cursor, to = cursor + (rails ? railingLength : 0.2f);
+                        if (!Free(from, to))
+                            break;
+                        // Une rambarde est posée par son centre, un plot à sa position
+                        if (!Place(rails ? railing : plot, rails ? (from + to) / 2 : from))
+                            break;
+                        cursor += step;
+                    }
+                    cursor = Mathf.Max(cursor, start + step) + 2f + (float)random.NextDouble() * 4f;
+                }
+            }
         }
 
         // Béton texturé comme les îlots ; un matériau déjà texturé n'est pas modifié (retouches à la main conservées)

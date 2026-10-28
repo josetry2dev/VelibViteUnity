@@ -42,6 +42,7 @@ partial class OsmImporter
                 sidewalkWidth = Mathf.Clamp(EditorGUILayout.FloatField("Largeur (m)", sidewalkWidth), 0.5f, 15f);
                 settings.CurbHeight = Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Hauteur bordure (m)", "Le vélo monte une marche de 0,2 m"), settings.CurbHeight), 0.05f, 0.4f);
                 settings.RandomRamps = EditorGUILayout.Toggle("Bateaux aléatoires", settings.RandomRamps);
+                FurnitureGUI(settings);
                 EditorGUI.indentLevel--;
             }
             hideBlock = EditorGUILayout.Toggle(new GUIContent("Cacher le bloc vierge", "Désactivé (pas supprimé) une fois habillé"), hideBlock);
@@ -149,13 +150,15 @@ partial class OsmImporter
                 top = settings.CurbHeight;
                 var walk = Child(root.transform, "Trottoir");
                 var outline = SidewalkOutline(local, sidewalkWidth);
-                var mesh = SidewalkMesh(outline, PlaceRamps(outline, new List<Vector2>(), settings, random), 0f, top, block.name + " Trottoir");
+                var ramps = PlaceRamps(outline, new List<Vector2>(), settings, random);
+                var mesh = SidewalkMesh(outline, ramps, 0f, top, block.name + " Trottoir");
                 walk.AddComponent<MeshFilter>().sharedMesh = mesh;
                 walk.AddComponent<MeshRenderer>().sharedMaterials = new[] { ConcreteMaterial("Trottoir", new Color(0.42f, 0.42f, 0.41f)), ConcreteMaterial("Bordure", new Color(0.68f, 0.68f, 0.66f)) };
                 walk.AddComponent<MeshCollider>().sharedMesh = mesh;
                 // Comme les trottoirs de CarrefourCity : marche (StepUp) à basse vitesse, crash au-delà
                 walk.tag = ObstacleTag;
                 walk.layer = LayerMask.NameToLayer("Floor");
+                PlaceFurniture(root.transform, outline, ramps, local, top, settings, random);
             }
 
             if (!PlaceFacades(root.transform, local, _ => height, facades, top, settings, random, Habillage.Shops(), Habillage.Graffs()))
