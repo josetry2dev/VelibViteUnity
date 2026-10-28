@@ -10,7 +10,9 @@ using UnityEngine;
 // Importe un fichier OpenStreetMap (.osm) en 3D à l'échelle, sans texture : un bloc par bâtiment
 // et un sol plat coloré par type (routes, trottoirs, zones piétonnes, verdure...) pour reconstruire la map par-dessus.
 // Axes : x = est, z = nord, 1 unité = 1 m. L'origine (lat, lon) tombe en (0, 0, 0).
-class OsmImporter : EditorWindow
+// Option pâtés : les bâtiments qui se touchent forment un pâté posé sur son trottoir, habillé de façades Generic
+// (voir OsmImporter.Blocks.cs).
+partial class OsmImporter : EditorWindow
 {
     const string OutputDir = "Assets/OSM";
     const string MaterialDir = OutputDir + "/Materials";
@@ -41,6 +43,7 @@ class OsmImporter : EditorWindow
     int defaultLevels = 5;
     float sidewalkWidth = 3f;
     bool addColliders;
+    BlockSettings blockSettings = new BlockSettings();
 
     [MenuItem("FOUVELIB/Importer un fichier OSM...")]
     static void Open() => GetWindow<OsmImporter>(true, "Import OpenStreetMap");
@@ -83,6 +86,9 @@ class OsmImporter : EditorWindow
         sidewalkWidth = Mathf.Max(0.5f, EditorGUILayout.FloatField(new GUIContent("Largeur trottoir (m)", "Trottoirs sans largeur renseignée"), sidewalkWidth));
         addColliders = EditorGUILayout.Toggle("Colliders", addColliders);
 
+        EditorGUILayout.Space();
+        BlockSettingsGUI(blockSettings);
+
         if (GUILayout.Button("Générer"))
             Generate();
     }
@@ -123,6 +129,7 @@ class OsmImporter : EditorWindow
             DefaultLevels = defaultLevels,
             SidewalkWidth = sidewalkWidth,
             AddColliders = addColliders,
+            Blocks = blockSettings.Enabled ? blockSettings : null,
         };
         var root = builder.Build(Path.GetFileNameWithoutExtension(filePath));
         Selection.activeGameObject = root;
@@ -148,6 +155,7 @@ class OsmImporter : EditorWindow
     class OsmData
     {
         public Dictionary<long, (double lat, double lon)> Nodes = new Dictionary<long, (double, double)>();
+        public Dictionary<long, Dictionary<string, string>> NodeTags = new Dictionary<long, Dictionary<string, string>>();
         public List<Way> Ways = new List<Way>();
         public Dictionary<long, Way> WaysById = new Dictionary<long, Way>();
         public List<Relation> Relations = new List<Relation>();
@@ -182,7 +190,12 @@ class OsmImporter : EditorWindow
                             relation = null;
                             tags = null;
                             if (!Deleted(reader))
-                                data.Nodes[Long(reader, "id")] = (Double(reader, "lat"), Double(reader, "lon"));
+                            {
+                                long id = Long(reader, "id");
+                                data.Nodes[id] = (Double(reader, "lat"), Double(reader, "lon"));
+                                if (!reader.IsEmptyElement)
+                                    tags = data.NodeTags[id] = new Dictionary<string, string>();
+                            }
                             break;
                         case "way":
                             relation = null;
@@ -344,16 +357,20 @@ class OsmImporter : EditorWindow
         public List<List<Vector2>> Holes = new List<List<Vector2>>();
     }
 
-    class SceneBuilder
+    partial class SceneBuilder
     {
         public float LevelHeight, SidewalkWidth;
         public int DefaultLevels;
         public bool AddColliders;
+        public BlockSettings Blocks;
 
         readonly OsmData data;
         readonly Projection projection;
         readonly Dictionary<Ground, MeshBuilder> ground = new Dictionary<Ground, MeshBuilder>();
         readonly List<Mesh> meshes = new List<Mesh>();
+        // Emprise des chaussées pour arrêter les trottoirs des pâtés au bord de la route
+        readonly RoadSurface roads = new RoadSurface();
+        readonly List<Area> buildingAreas = new List<Area>();
 
         public SceneBuilder(OsmData data, Projection projection)
         {
@@ -384,13 +401,25 @@ class OsmImporter : EditorWindow
                         EditorUtility.DisplayProgressBar("Import OSM", $"Bâtiments et zones ({i}/{areas.Count})", 0.8f * i / areas.Count);
                     var area = areas[i];
                     if (IsBuilding(area.Tags))
-                        CreateBuilding(area, buildingsRoot, buildingMaterial);
+                    {
+                        if (Blocks != null && BlockCandidate(area))
+                            buildingAreas.Add(area);
+                        else
+                            CreateBuilding(area, buildingsRoot, buildingMaterial, small: Blocks != null);
+                    }
                     else if (AreaCategory(area.Tags) is Ground category)
+                    {
                         AddArea(GroundMesh(category), area, Height(category));
+                        if (category is Ground.Route or Ground.Parking or Ground.Cyclable)
+                            roads.Areas.Add(area);
+                    }
                 }
 
-                EditorUtility.DisplayProgressBar("Import OSM", "Routes et trottoirs", 0.85f);
+                EditorUtility.DisplayProgressBar("Import OSM", "Routes et trottoirs", 0.6f);
                 AddLines();
+
+                if (Blocks != null)
+                    BuildBlocks(root.transform, name, buildingMaterial);
 
                 EditorUtility.DisplayProgressBar("Import OSM", "Enregistrement des meshes", 0.9f);
                 foreach (var kv in ground.OrderBy(kv => kv.Key))
@@ -477,14 +506,21 @@ class OsmImporter : EditorWindow
             return areas;
         }
 
-        void CreateBuilding(Area area, Transform parent, Material material)
+        // small : kiosque, édicule... un seul niveau par défaut au lieu d'un immeuble
+        (float bottom, float top) BuildingHeights(Dictionary<string, string> tags, bool small = false)
         {
-            var tags = area.Tags;
             float bottom = ParseMeters(Tag(tags, "min_height")) ?? (ParseMeters(Tag(tags, "building:min_level")) ?? 0f) * LevelHeight;
             float top = ParseMeters(Tag(tags, "height"))
-                ?? ((ParseMeters(Tag(tags, "building:levels")) ?? DefaultLevels) + (ParseMeters(Tag(tags, "roof:levels")) ?? 0f)) * LevelHeight;
+                ?? ((ParseMeters(Tag(tags, "building:levels")) ?? (small ? 1 : DefaultLevels)) + (ParseMeters(Tag(tags, "roof:levels")) ?? 0f)) * LevelHeight;
             if (top < bottom + 0.5f)
                 top = bottom + LevelHeight;
+            return (bottom, top);
+        }
+
+        GameObject CreateBuilding(Area area, Transform parent, Material material, float baseHeight = 0f, bool small = false)
+        {
+            var tags = area.Tags;
+            var (bottom, top) = BuildingHeights(tags, small);
 
             // Pivot au centre de l'emprise, au niveau du sol : pratique pour remplacer le bloc par un mesh plus tard
             var center = area.Outer.Aggregate(Vector2.zero, (sum, p) => sum + p) / area.Outer.Count;
@@ -506,8 +542,9 @@ class OsmImporter : EditorWindow
 
             var label = Tag(tags, "name") ?? (Tag(tags, "addr:housenumber") != null ? $"{Tag(tags, "addr:housenumber")} {Tag(tags, "addr:street")}".Trim() : null);
             var go = Child(parent, label != null ? $"Batiment {area.Id} - {label}" : $"Batiment {area.Id}");
-            go.transform.localPosition = V(center, 0f);
+            go.transform.localPosition = V(center, baseHeight);
             AddMesh(go, mb.ToMesh(go.name), material);
+            return go;
         }
 
         // Anneaux orientés : contour anti-horaire et trous horaires (vus du dessus), la normale sortante
@@ -546,11 +583,17 @@ class OsmImporter : EditorWindow
                 float width = ParseMeters(Tag(way.Tags, "width")) ?? (category == Ground.Trottoir ? SidewalkWidth : defaultWidth);
                 if (category == Ground.Route && Tag(way.Tags, "width") == null && ParseMeters(Tag(way.Tags, "lanes")) is float lanes)
                     width = lanes * 3.25f;
+                // Avec les pâtés, les trottoirs sont générés autour des bâtiments
+                if (category == Ground.Trottoir && Blocks != null)
+                    continue;
                 AddStrip(GroundMesh(category), points, -width / 2, width / 2, Height(category));
+                if (category is Ground.Route or Ground.Cyclable or Ground.Rail || Tag(way.Tags, "highway") == "pedestrian")
+                    roads.Lines.Add((points, width));
 
                 if (category != Ground.Route)
                     continue;
-                AddSidewalks(way.Tags, points, width);
+                if (Blocks == null)
+                    AddSidewalks(way.Tags, points, width);
                 foreach (var id in way.Nodes.Distinct())
                 {
                     junctions.TryGetValue(id, out var j);
@@ -558,11 +601,12 @@ class OsmImporter : EditorWindow
                 }
             }
 
-            var roads = GroundMesh(Ground.Route);
+            var roadMesh = GroundMesh(Ground.Route);
             foreach (var kv in junctions.Where(kv => kv.Value.count > 1))
             {
                 var n = data.Nodes[kv.Key];
-                AddDisc(roads, Project(n.lat, n.lon), kv.Value.radius, Height(Ground.Route));
+                AddDisc(roadMesh, Project(n.lat, n.lon), kv.Value.radius, Height(Ground.Route));
+                roads.Discs.Add((Project(n.lat, n.lon), kv.Value.radius));
             }
         }
 
