@@ -140,7 +140,7 @@ partial class OsmImporter
                 var footprint = block.Footprint.Select(p => p - block.Pivot).ToList();
                 var sidewalk = block.Sidewalk.Select(p => p - block.Pivot).ToList();
 
-                var ramps = PlaceRamps(sidewalk, crossings.Select(p => p - block.Pivot).ToList(), random);
+                var ramps = PlaceRamps(sidewalk, crossings.Select(p => p - block.Pivot).ToList(), Blocks, random);
                 var walk = Child(go.transform, "Trottoir");
                 var mesh = SidewalkMesh(sidewalk, ramps, roadLevel, top, $"{name} Trottoir {g + 1}");
                 meshes.Add(mesh);
@@ -151,7 +151,7 @@ partial class OsmImporter
                 walk.tag = ObstacleTag;
                 walk.layer = LayerMask.NameToLayer("Floor");
 
-                bool dressed = facades.Count > 0 && PlaceFacades(go.transform, footprint, block, facades, top, random, shops, graffs);
+                bool dressed = facades.Count > 0 && PlaceFacades(go.transform, footprint, p => HeightAt(block, p + block.Pivot), facades, top, Blocks, random, shops, graffs);
                 if (dressed)
                 {
                     // Plafond sombre sous les toits des façades : cache le vide intérieur du pâté
@@ -517,7 +517,7 @@ partial class OsmImporter
         // --- Trottoir ---
 
         // Bateau : côté du contour du trottoir et distance le long de ce côté
-        List<(int edge, float along)> PlaceRamps(List<Vector2> ring, List<Vector2> crossings, System.Random random)
+        static List<(int edge, float along)> PlaceRamps(List<Vector2> ring, List<Vector2> crossings, BlockSettings settings, System.Random random)
         {
             var ramps = new List<(int edge, float along)>();
             const float margin = RampWidth / 2 + RampTransition + 0.3f;
@@ -560,7 +560,7 @@ partial class OsmImporter
                     TryAdd(bestEdge, bestAlong);
             }
 
-            if (Blocks.RandomRamps)
+            if (settings.RandomRamps)
             {
                 // Entrées de garage et bateaux isolés : environ un tous les 40 m sur les grands côtés
                 for (int i = 0; i < ring.Count; i++)
@@ -697,8 +697,9 @@ partial class OsmImporter
                 .Where(p => p != null && p.GetComponent<FacadeGeneric>() != null)
                 .Select(p => (p, p.GetComponent<FacadeGeneric>())).ToList();
 
-        bool PlaceFacades(Transform blockRoot, List<Vector2> ring, Block block, List<(GameObject prefab, FacadeGeneric info)> facades,
-            float top, System.Random random, List<GameObject> shops, List<Texture2D> graffs)
+        // ring : contour anti-horaire dans l'espace de blockRoot ; heightAt : hauteur visée en un point de cet espace
+        static bool PlaceFacades(Transform blockRoot, List<Vector2> ring, System.Func<Vector2, float> heightAt, List<(GameObject prefab, FacadeGeneric info)> facades,
+            float top, BlockSettings settings, System.Random random, List<GameObject> shops, List<Texture2D> graffs)
         {
             var parent = Child(blockRoot, "Façades").transform;
             int placed = 0;
@@ -716,8 +717,8 @@ partial class OsmImporter
                 if (run < MinFacadeRun)
                     continue;
 
-                // Hauteur visée : bâtiment OSM juste derrière la façade
-                float TargetHeight(float along) => HeightAt(block, a + block.Pivot + dir * (start + Mathf.Clamp(along, 0f, run)) - outward * 1.5f);
+                // Hauteur visée : bâtiment juste derrière la façade
+                float TargetHeight(float along) => heightAt(a + dir * (start + Mathf.Clamp(along, 0f, run)) - outward * 1.5f);
                 var (sequence, scale) = ChooseFacades(run, TargetHeight, facades, random);
 
                 float cursor = start;
@@ -734,9 +735,9 @@ partial class OsmImporter
                     go.transform.localScale = new Vector3(scale, 1f, 1f);
                     placed++;
 
-                    if (Blocks.AutoHabillage)
+                    if (settings.AutoHabillage)
                         foreach (var rideau in go.GetComponentsInChildren<RideauDeFer>())
-                            Habillage.Randomize(rideau, random, Blocks.ShopChance, Blocks.GraffChance, shops, graffs);
+                            Habillage.Randomize(rideau, random, settings.ShopChance, settings.GraffChance, shops, graffs);
                 }
             }
             return placed > 0;

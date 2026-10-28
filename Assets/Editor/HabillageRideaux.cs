@@ -190,10 +190,12 @@ static class Habillage
         return weights.Count - 1;
     }
 
-    // Gizmo cliquable dans la Scene view pour sélectionner un rideau
+    // Gizmo cliquable dans la Scene view pour sélectionner un rideau, seulement quand la fenêtre d'habillage est ouverte
     [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
     static void DrawRideau(RideauDeFer rideau, GizmoType type)
     {
+        if (!EditorWindow.HasOpenInstances<HabillageRideaux>())
+            return;
         bool selected = (type & GizmoType.Selected) != 0;
         Gizmos.matrix = rideau.transform.localToWorldMatrix;
         var center = new Vector3(0f, rideau.size.y / 2, 0.05f);
@@ -215,7 +217,14 @@ class HabillageRideaux : EditorWindow
     [MenuItem("FOUVELIB/Habillage des rideaux")]
     static void Open() => GetWindow<HabillageRideaux>("Habillage rideaux");
 
-    void OnEnable() => Refresh();
+    void OnEnable()
+    {
+        Refresh();
+        SceneView.RepaintAll();
+    }
+
+    // Les cadres orange disparaissent avec la fenêtre
+    void OnDisable() => EditorApplication.delayCall += SceneView.RepaintAll;
     void OnFocus() => Refresh();
     void OnSelectionChange() => Repaint();
 
