@@ -227,6 +227,61 @@ static class FacadePrefabSetup
         }
     }
 
+    // Shops ajoutés ensuite (FBX posé dans une scène puis glissé dans Habillage/Shops) : le root porte encore
+    // la rotation et le scale donnés à la main. Ils passent sur l'enfant Mesh, le root est remis à zéro.
+    // Posés ainsi, leur devanture regarde -Z : demi-tour pour qu'elle regarde la rue (+Z).
+    // Appelé automatiquement à chaque listing des shops (Habillage.Shops), ne fait rien sur un shop déjà prêt.
+    public static void PrepareNewShops(List<GameObject> shops)
+    {
+        var done = new List<string>();
+        foreach (var shop in shops)
+        {
+            bool restructure = shop.transform.Find("Mesh") == null && shop.GetComponent<MeshFilter>() != null;
+            if (!restructure && GameObjectUtility.GetStaticEditorFlags(shop) != 0)
+                continue;
+            var path = AssetDatabase.GetAssetPath(shop);
+            var root = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                // Static pour recevoir les lightmaps des spots baked
+                foreach (var t in root.GetComponentsInChildren<Transform>(true))
+                    if (t.GetComponent<Light>() == null)
+                        GameObjectUtility.SetStaticEditorFlags(t.gameObject, (StaticEditorFlags)int.MaxValue);
+                if (!restructure)
+                {
+                    PrefabUtility.SaveAsPrefabAsset(root, path);
+                    done.Add(shop.name);
+                    continue;
+                }
+
+                var rotation = Quaternion.Euler(0f, 180f, 0f) * root.transform.localRotation;
+                var child = MoveMeshToChild(root, Vector3.zero, rotation, root.transform.localScale);
+                var renderer = child.GetComponent<MeshRenderer>();
+                var bounds = LocalBounds(root.transform, renderer);
+                child.localPosition = -new Vector3(bounds.center.x, bounds.min.y, bounds.min.z);
+                bounds = LocalBounds(root.transform, renderer);
+
+                var box = root.GetComponent<BoxCollider>();
+                if (box == null)
+                    box = root.AddComponent<BoxCollider>();
+                box.center = bounds.center;
+                box.size = bounds.size;
+                root.tag = ObstacleTag;
+                if (root.GetComponent<ShopHabillage>() == null)
+                    root.AddComponent<ShopHabillage>();
+
+                PrefabUtility.SaveAsPrefabAsset(root, path);
+                done.Add(shop.name);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+        if (done.Count > 0)
+            Debug.Log("Shops préparés : " + string.Join(", ", done));
+    }
+
     // Boîte englobante d'un renderer dans l'espace local de root
     public static Bounds LocalBounds(Transform root, Renderer renderer)
     {

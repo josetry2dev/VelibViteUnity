@@ -15,15 +15,21 @@ static class Habillage
     const string GraffMaterialsDir = GraffsDir + "/Materials";
     const string ChildName = "Habillage";
 
-    // Marge pour que le shop déborde un peu du rideau et le cache entièrement
-    const float ShopMargin = 1.04f;
-    // Un shop peut être étiré en largeur, mais sa hauteur suit au moins à 70 % pour ne pas l'écraser
-    const float ShopMinAspect = 0.7f;
+    // Le shop garde ses proportions : sa devanture dépasse un peu au-dessus du rideau (vitrine + enseigne)
+    const float ShopTopMargin = 1.12f;
+    // Le rideau peut rester visible sur les côtés, mais le shop ne déborde pas trop sur la façade voisine
+    const float ShopMaxWidth = 1.1f;
     const float GraffMargin = 0.95f;
     // Boîte de projection du graff : devant le mur et derrière (rideaux légèrement en retrait)
     const float GraffFront = 0.3f, GraffDepth = 0.8f;
 
-    public static List<GameObject> Shops() => Load<GameObject>(ShopsDir, "t:Prefab");
+    // Les shops fraîchement ajoutés sont mis au format (orientation, pivot, static) au passage
+    public static List<GameObject> Shops()
+    {
+        var shops = Load<GameObject>(ShopsDir, "t:Prefab");
+        FacadePrefabSetup.PrepareNewShops(shops);
+        return shops;
+    }
     public static List<Texture2D> Graffs() => Load<Texture2D>(GraffsDir, "t:Texture2D").Where(t => !AssetDatabase.GetAssetPath(t).StartsWith(GraffMaterialsDir)).ToList();
 
     static List<T> Load<T>(string dir, string filter) where T : Object =>
@@ -67,16 +73,19 @@ static class Habillage
 
         // Le calcul se fait en taille monde puis est ramené dans l'espace (éventuellement étiré) du rideau
         var cover = Cover(prefab);
-        var size = WorldSize(rideau);
         var parentScale = new Vector3(Mathf.Abs(rideau.transform.lossyScale.x), Mathf.Abs(rideau.transform.lossyScale.y), Mathf.Abs(rideau.transform.lossyScale.z));
-        float sx = size.x / cover.width * ShopMargin;
-        float sy = Mathf.Max(size.y / cover.height * ShopMargin, sx * ShopMinAspect);
-        float sz = Mathf.Min(sx, sy);
-        var scale = new Vector3(sx / parentScale.x, sy / parentScale.y, sz / parentScale.z);
+        float s = ShopScale(WorldSize(rideau), cover);
+        var scale = new Vector3(s / parentScale.x, s / parentScale.y, s / parentScale.z);
         shop.transform.localScale = scale;
         // Devanture centrée sur le rideau, posée en bas
         shop.transform.localPosition = new Vector3(-cover.center.x * scale.x, -cover.yMin * scale.y, 0f);
     }
+
+    // Scale uniforme calé sur la hauteur du rideau, réduit si le shop serait trop large
+    static float ShopScale(Vector2 size, Rect cover) =>
+        Mathf.Min(HeightFit(size, cover), size.x * ShopMaxWidth / cover.width);
+
+    static float HeightFit(Vector2 size, Rect cover) => size.y * ShopTopMargin / cover.height;
 
     // Zone de devanture à couvrir : ShopHabillage.cover, sinon toute la boîte du shop
     static Rect Cover(GameObject prefab)
@@ -148,7 +157,8 @@ static class Habillage
         return material;
     }
 
-    // Habillage aléatoire : shop, graff ou rien. Les shops dont les proportions collent au rideau sont favorisés
+    // Habillage aléatoire : shop, graff ou rien. Favorisés : les shops qui couvrent le rideau en hauteur
+    // (pas réduits à cause de leur largeur), puis ceux qui laissent peu de rideau visible sur les côtés
     public static void Randomize(RideauDeFer rideau, System.Random random, float shopChance, float graffChance, List<GameObject> shops, List<Texture2D> graffs)
     {
         double roll = random.NextDouble();
@@ -158,8 +168,10 @@ static class Habillage
             var weights = shops.Select(s =>
             {
                 var c = Cover(s);
-                float stretch = Mathf.Abs(Mathf.Log(size.x / c.width * c.height / size.y));
-                return Mathf.Exp(-2f * stretch);
+                float scale = ShopScale(size, c);
+                float shrunk = Mathf.Log(HeightFit(size, c) / scale);
+                float sideGap = Mathf.Max(0f, Mathf.Log(size.x / (c.width * scale)));
+                return Mathf.Exp(-4f * shrunk - sideGap);
             }).ToList();
             Apply(rideau, shops[Pick(random, weights)]);
         }
